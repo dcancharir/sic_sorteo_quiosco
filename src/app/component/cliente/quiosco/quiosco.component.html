@@ -1,0 +1,91 @@
+<ngx-spinner type="pacman"></ngx-spinner>
+<div class="wrapper">
+    <div class="content shadow-sm " style="padding-bottom: 58px;">
+        <header class="header">
+            <!-- Fixed navbar -->
+            <nav class="container-fluid">
+                <div class="row">
+                    <div class="col align-self-center">
+                        <a href="javascript:void(0)" class="logo text-white">
+                            <div class="logo-text">
+                                <h5 class="fs22 mb-0"><span class="text-danger">Sic</span> - Sorteos <sup
+                                        class="badge badge-danger">v2</sup></h5>
+                                <p class="text-uppercase fs11">Quiosco {{quioscoId}}</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="background">
+            <div class="bg_img">
+                <img class="img_response" src="{{fondo}}" alt="" style="filter:blur(6px);">
+            </div>
+
+            <div class="overlay_gradient"></div>
+            <div class="background_dots"></div>
+        </div>
+
+        <!-- Main container starts -->
+        <div class="container main-container" style="margin-top: -27px;" id="main-container">
+            <div class="row login-row-height">
+                <div class="col-12 col-md-10 col-lg-8 offset-lg-2 offset-md-1  align-self-center">
+                    <div class="text-center mb-4">
+                        <img style="width: 240px;margin: auto;filter: contrast(150%);" class="img_response" src="{{logo}}" alt="">
+                    </div>
+
+                    <div class="card border-red shadow-lg blur mb-4">
+                        <div class="card-body pt-3" style="color: #fff;padding-left: 32px;padding-right: 32px;">
+                            <div>
+                                <form autocomplete="off" [autocomplete]="false" [formGroup]="onCreateForm">
+
+                                    <div class="row">
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Tipo Documento</label>
+                                                <ng-select class="form-control cbo-tipodocumento" formControlName="tipodocumento"
+                                                    [(ngModel)]="tipodocumento" [clearable]="true"
+                                                    [searchable]="false" [multiple]="false">
+                                                    <ng-option *ngFor="let e of listatipodocumento"
+                                                        [value]="e.TipoDocumentoId">{{e.Nombre}} </ng-option>
+                                                </ng-select>
+                                            </div>
+                                        </div>
+    
+                                        <div class="col-lg-12 col-md-12">
+                                            <div class="form-group">
+                                                <label>Nro. Documento</label>
+                                                <input type="text" #nrodocumento_input onClick="this.select();"
+                                                    [(ngModel)]="nrodocumento" formControlName="nrodocumento"
+                                                    class="form-control rounded-0  mb-1" placeholder=""
+                                                    readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="form-group">
+                                                <label>Ingrese su clave de seguridad y presione ENTRAR</label>
+                                                <input type="password" #clave_input onClick="this.select();"
+                                                    [(ngModel)]="claveSeguridad" formControlName="claveSeguridad"
+                                                    class="form-control rounded-0 mb-1" placeholder=""
+                                                    readonly>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12 mt-2">
+                                            <div class="form-group ">
+                                                <button (click)="loginCliente()" class=" btn btn-warning btn-block"
+                                                    style="height: 50px;">Ingresar
+                                                    <i class="material-icons md-18">arrow_forward</i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>
+

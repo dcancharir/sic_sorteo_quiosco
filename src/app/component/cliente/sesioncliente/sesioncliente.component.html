@@ -1,0 +1,96 @@
+<ngx-spinner type="pacman"></ngx-spinner>
+<div class="wrapper">
+    <div class="content shadow-sm " style="padding-bottom: 58px;">
+        <header class="header">
+            <!-- Fixed navbar -->
+            <nav class="container-fluid">
+                <div class="row">
+                    <div class="col align-self-center">
+                        <a href="javascript:void(0)" class="logo text-white">
+                            <div class="logo-text">
+                                <h5 class="fs22 mb-0"><span class="text-danger">Sic</span> - Sorteos <sup
+                                        class="badge badge-danger">v2</sup></h5>
+                                <p class="text-uppercase fs11">Quiosco {{quioscoId}}</p>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="col text-right align-self-center">
+                        <a (click)="cerrarSesion()" href="javascript:void(0)"
+                            class="btn btn-sm btn-{{cliente.ClienteId>0?'success':'danger'}} text-uppercase"> <i
+                                class="fa fa-{{cliente.ClienteId>0?'check':'close'}}"></i>
+                            {{cliente.ClienteId>0?'Salir':'Ingresar'}}</a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+       
+        <div class="background">
+            <div class="bg_img">
+                <img class="img_response" src="{{fondo}}" alt="" style="filter:blur(6px);">
+            </div>
+
+            <div class="overlay_gradient"></div>
+            <div class="background_dots"></div>
+        </div>
+
+        <!-- Main container starts -->
+        <div class="container main-container" style="margin-top: -27px;" id="main-container">
+            <div class="row login-row-height">
+                <div class="col-12 col-md-10 col-lg-8 offset-lg-2 offset-md-1  align-self-center">
+                    <div class="text-center mb-4 mt-4">
+                        <img style="width: 240px;margin: auto;filter: contrast(150%);" class="img_response" src="{{logo}}" alt="">
+                    </div>
+
+                    <div class="card border-red shadow-lg blur mb-4">
+                        <div class="card-body pt-3" style="color: #fff;padding-left: 32px;padding-right: 32px;">
+                            <div class="text-center">
+                                <h2 class="text-center text-light">Nro. Doc. : {{cliente.NroDoc}}</h2>
+                                <h2 class="text-center text-warning">{{cliente.NombreCompleto}} </h2>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div *ngIf="isUserIdle" class="inactivity-warning">
+                        <p>{{userMessage}} </p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <h4 class="text-center text-light">Lista de Cupones para Imprimir</h4>
+                    <table class="table table-sm table-bordered table-striped table-hover display " width="100%">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="font-size: 22px;">SORTEO</th>
+                                <th class="bg-danger text-center" style="font-size: 22px;">FECHA FIN</th>
+                                <th class="bg-danger text-center" style="font-size: 22px;">CUPONES</th>
+                                <th class="text-center" style="font-size: 22px;">ACCIÓN</th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let registro of listResult">
+                                <td style="font-size: 22px;">{{ registro.NombreSorteo }}</td>
+                                <td class="text-nowrap text-right" style="font-size: 22px; font-weight: bold;">{{ convertDate(registro.FechaFin) }}</td>
+                                <td class="text-nowrap text-right" style="font-size: 22px; font-weight: bold;">{{ registro.CantidadCuponesDisponibles }}</td>
+                                <td class="text-center"><button class="btn btn-success"
+                                        (click)="abrirModalImpresion(registro.SorteoId,registro.CantidadCuponesDisponibles, registro.NombreSorteo)"><i
+                                            class="fa fa-print"></i> Imprimir</button></td>
+                            </tr>
+
+                            <tr *ngIf="listResult.length==0">
+                                <td colspan="3" class="text-center"><span class="badge badge-warning">No tiene
+                                        registros</span></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-footer></app-footer>
+</div>

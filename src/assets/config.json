@@ -1,0 +1,6 @@
+{
+    "QuioscoId":1,
+    "UriSorteos":"http://localhost:5148",
+    "TiempoInactividad":10000,
+    "TiempoConteo":10000
+}
