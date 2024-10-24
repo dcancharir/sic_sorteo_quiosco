@@ -90,7 +90,73 @@
                     </table>
                 </div>
             </div>
+            <div class="fondoprogress" *ngIf="progresactive">
+                <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1">
+                    <p class="text-progress">{{mensajeProgressBar}}</p>
+                    <!-- <ngb-progressbar [value]="valorprogressbar" style="font-size: 45px;">{{valorprogressbar}}%</ngb-progressbar> -->
+                </div>
+            </div>
         </div>
     </div>
     <app-footer></app-footer>
 </div>
+<ng-template class="bg-danger" #modalImpresion let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{sorteoSeleccionado}}</h4>
+        <button type="button" class="close btn-sm" aria-label="Close" (click)="modal.dismiss('Cross click')"><i
+                class="material-icons icon md-18">close</i></button>
+    </div>
+    <div class="modal-body text-light text-center">
+        <div class="row">
+            <div class="col-md-12 col-sm-12">
+                <div class="mb-10" style="font-size: 25px;margin-bottom: 15px;">
+                    CUPONES DISPONIBLES : <span class="badge badge-warning" style="font-size: 40px;">{{tope}}</span>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="form-group ">
+                    <div class="form-group mb-0">
+                        <div class="input-group">
+                            <input type="text" [(ngModel)]="cantidadStr" onClick="this.select();"
+                                class="form-control text-center" placeholder="" readonly>
+                        </div>
+                        <p>Ingrese la cantidad de cupones a imprimir y pulse IMPRIMIR</p>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="numericKeyboard">
+                <div class="numericKeyboardRow">
+                    <div class="numericKey btn" (click)="addChar('1')">1</div>
+                    <div class="numericKey btn" (click)="addChar('2')">2</div>
+                    <div class="numericKey btn" (click)="addChar('3')">3</div>
+                   
+                </div>
+                <div class="numericKeyboardRow">
+                    <div class="numericKey btn" (click)="addChar('4')">4</div>
+                    <div class="numericKey btn" (click)="addChar('5')">5</div>
+                    <div class="numericKey btn" (click)="addChar('6')">6</div>
+                   
+                </div>
+                <div class="numericKeyboardRow">
+                    <div class="numericKey btn" (click)="addChar('7')">7</div>
+                    <div class="numericKey btn" (click)="addChar('8')">8</div>
+                    <div class="numericKey btn" (click)="addChar('9')">9</div>
+                </div>
+                <div class="numericKeyboardRow">
+                    <div class="numericKey btn" (click)="addChar('0')">0</div>
+                    <div class="numericKey btn" (click)="backspace()" style="font-size: 25px;">LIMPIAR</div>
+                    <div class="numericKey btn" (click)="enter()" style="font-size: 25px;">IMPRIMIR</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cerrar</button>
+    </div>
+</ng-template>

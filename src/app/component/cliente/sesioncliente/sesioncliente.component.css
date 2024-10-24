@@ -27,3 +27,60 @@ label{
     justify-content: center;
     margin-bottom: 15px;
   }
+/*Teclado numerico*/
+.numericKeyboard {
+    display: flex;
+    flex-direction: column;
+}
+
+.numericKeyboardRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.numericKey {
+    font-size: 40px;
+    width: 150px;
+    height: 70px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    cursor: pointer;
+    background-color:#1d285a ;
+    color: #f0f0f0;
+}
+
+.numericKey:hover {
+    background-color: #e5e5e5;
+}
+/*progressbar*/
+.fondoprogress{
+    position: absolute;
+    background: #0000008a;
+    top: 0px;
+    border: 0px;
+    height: 100%;
+    z-index: 10;
+    width: 100%;
+}
+
+.fondoprogress div{
+    top: 40%;
+    /* width: 80%; */
+    margin: auto;
+    text-align: center;
+}
+
+.progress{
+    background-color: black;
+    border:1px solid #ffee07;
+}
+.text-progress{
+    background: #000000;
+    font-size: 40px;
+    color: #ffffff;
+    text-align: center;
+}

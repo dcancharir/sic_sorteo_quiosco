@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, TemplateRef,ViewChild,ElementRef } from '@angular/core';
 import { Router } from '@angular/router'
 import { ConfigService } from '../../../service/config.service'
 import { NgxSpinnerService } from "ngx-spinner"
@@ -8,12 +8,23 @@ import { QuioscoResult } from '../../../model/QuioscoResult'
 import { Cliente } from '../../../model/Cliente'
 import moment from 'moment'
 import { IddleuserserviceService } from '../../../service/iddleuserservice.service'
+import { NgbModal, ModalDismissReasons,NgbProgressbarConfig,NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
 @Component({
   selector: 'app-sesioncliente',
   templateUrl: './sesioncliente.component.html',
   styleUrl: './sesioncliente.component.css'
 })
 export class SesionClienteComponent implements OnInit {
+  @ViewChild('modalImpresion') public templateModalImpresion!: TemplateRef<any>
+  messages : string[] = []
+  sorteoSeleccionado:string = ''
+  tope:number = 0
+  clienteId:number = 0
+  sorteoId:number =0
+  cantidad:number = 0
+  cantidadStr:string = ''
+  closeResult = ''
+  modalRef!: NgbModalRef
   userMessage : string = ''
   isUserIdle: boolean = false
   listResult : QuioscoResult[] = []
@@ -28,12 +39,16 @@ export class SesionClienteComponent implements OnInit {
     private toastr: ToastrService,
     private spinnerService:NgxSpinnerService,
     private quioscoService : QuioscoService, 
-    private idleUserService : IddleuserserviceService
+    private idleUserService : IddleuserserviceService,
+    private modalService: NgbModal,
   ){}
   ngOnInit(): void {
     if(localStorage.getItem("cliente")){
       const itemString = localStorage.getItem('cliente')
       this.cliente = itemString ? JSON.parse(itemString) : null
+      if(this.cliente){
+        this.clienteId = this.cliente.ClienteId
+      }
       this.cargarInfoQuiosco()
       this.cargarDataImpresion()
       this.idleUserService.stop()
@@ -76,6 +91,30 @@ export class SesionClienteComponent implements OnInit {
     }
   }
   abrirModalImpresion(sorteoid: number, cantidad: number, nombreSorteo : string){
+    this.tope = cantidad
+    this.sorteoId = sorteoid
+    this.open(this.templateModalImpresion,'xs')
+    this.cantidadStr = ''
+    this.sorteoSeleccionado = nombreSorteo
+  }
+  open(modal:TemplateRef<any>,size:string){
+    this.modalRef = this.modalService.open(modal,{ariaLabelledBy:'modal-basic-title',size:size,backdrop:'static'})
+    this.modalRef.result.then(result=>{
+      this.closeResult = `Closed with : ${result}`
+    },reason=>{
+      this.closeResult = `Dismissed ${this.getDisMissReason(reason)}`
+    })
+  }
+  getDisMissReason(reason:any):string{
+    if(reason === ModalDismissReasons.ESC){
+      return 'by pressing ESC'
+    }
+    else if (reason === ModalDismissReasons.BACKDROP_CLICK){
+      return 'by clicking on a backdrop'
+    }
+    else{
+      return `with ${reason}`
+    }
   }
   convertDate(fecha:Date){
     return moment(fecha,"YYYY-MM-DD").format("DD-MM-YYYY");
@@ -108,6 +147,50 @@ export class SesionClienteComponent implements OnInit {
           this.spinnerService.hide()
         }
       })
+    }
+  }
+  addChar(value : string){
+    if(parseInt(this.cantidadStr) > this.tope){
+      this.toastr.warning(`No puede imprimir mas de ${this.tope} cupones`)
+      return
+    }
+    this.cantidadStr += value
+    this.cantidad = parseInt(this.cantidadStr)
+
+  }
+  backspace(){
+    this.cantidadStr = ''
+    this.cantidad=0
+  }
+  enter(){
+    this.imprimir()
+  }
+  imprimir(){
+    if(this.cantidad == 0){
+      this.toastr.warning("Debe ingresar una cantidad a imprimir")
+      return
+    }
+    this.messages = []
+    if(this.cantidad > 0 && this.cantidad <= this.tope){
+      this.quioscoService.Print(this.sorteoId,this.clienteId,this.cantidad).subscribe({
+        next:result =>{
+          if(result.status){
+            this.toastr.success(`${result.msg}`)
+          }
+          else{
+            this.toastr.success(`${result.msg}`)
+          }
+        }
+        ,complete:()=>{
+          this.toastr.success(`Ha ocurrido un error`)
+        }
+        ,error:()=>{
+          this.toastr.success(`Ha ocurrido un error`)
+        }
+      })
+    }
+    else{
+      this.toastr.error("Verifique cantidad de cupones")
     }
   }
 }
