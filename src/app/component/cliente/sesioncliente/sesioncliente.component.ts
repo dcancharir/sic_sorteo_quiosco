@@ -8,13 +8,16 @@ import { QuioscoResult } from '../../../model/QuioscoResult'
 import { Cliente } from '../../../model/Cliente'
 import moment from 'moment'
 import { IddleuserserviceService } from '../../../service/iddleuserservice.service'
-import { NgbModal, ModalDismissReasons,NgbProgressbarConfig,NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
+import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
+import { SignalrService } from '../../../service/signalr.service';
 @Component({
   selector: 'app-sesioncliente',
   templateUrl: './sesioncliente.component.html',
   styleUrl: './sesioncliente.component.css'
 })
 export class SesionClienteComponent implements OnInit {
+  mensajeProgressBar : string = ''
+  progresactive:boolean = false
   @ViewChild('modalImpresion') public templateModalImpresion!: TemplateRef<any>
   messages : string[] = []
   sorteoSeleccionado:string = ''
@@ -41,6 +44,7 @@ export class SesionClienteComponent implements OnInit {
     private quioscoService : QuioscoService, 
     private idleUserService : IddleuserserviceService,
     private modalService: NgbModal,
+    private signalrService:SignalrService
   ){}
   ngOnInit(): void {
     if(localStorage.getItem("cliente")){
@@ -172,6 +176,41 @@ export class SesionClienteComponent implements OnInit {
     }
     this.messages = []
     if(this.cantidad > 0 && this.cantidad <= this.tope){
+      this.signalrService.startSignalrConnection().subscribe({
+        next:()=>{
+          this.signalrService.receiveMessage().subscribe({
+            next:innerRes=>{
+              this.idleUserService.stop()
+              this.progresactive=true
+              this.mensajeProgressBar = `${innerRes.serie} - ${innerRes.impreso?'IMPRESO':'ERROR'}`
+              if(innerRes.hide){
+                this.mensajeProgressBar = `${innerRes.message}`
+
+                this.modalRef.close()
+                this.toastr.success("Se terminó de Imprimir")
+                setTimeout(() => 
+                  {
+                    this.cargarDataImpresion()
+                    this.progresactive=false;
+                  },
+                  1500);
+              }
+            },
+            complete:()=>{
+              this.progresactive=false
+            }
+            ,error:()=>{
+              this.progresactive=false
+            }
+          })
+        }
+        ,complete:()=>{
+
+        },
+        error:()=>{
+
+        }
+      })
       this.quioscoService.Print(this.sorteoId,this.clienteId,this.cantidad).subscribe({
         next:result =>{
           if(result.status){
