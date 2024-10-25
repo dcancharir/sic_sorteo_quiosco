@@ -16,6 +16,8 @@ import { SignalrService } from '../../../service/signalr.service';
   styleUrl: './sesioncliente.component.css'
 })
 export class SesionClienteComponent implements OnInit {
+  messageProgressBar : string = ''
+  percentProgressBar : number = 0
   mensajeProgressBar : string = ''
   progresactive:boolean = false
   @ViewChild('modalImpresion') public templateModalImpresion!: TemplateRef<any>
@@ -44,8 +46,9 @@ export class SesionClienteComponent implements OnInit {
     private quioscoService : QuioscoService, 
     private idleUserService : IddleuserserviceService,
     private modalService: NgbModal,
-    private signalrService:SignalrService
-  ){}
+    private signalrService:SignalrService,
+  ){
+  }
   ngOnInit(): void {
     if(localStorage.getItem("cliente")){
       const itemString = localStorage.getItem('cliente')
@@ -183,9 +186,10 @@ export class SesionClienteComponent implements OnInit {
               this.idleUserService.stop()
               this.progresactive=true
               this.mensajeProgressBar = `${innerRes.serie} - ${innerRes.impreso?'IMPRESO':'ERROR'}`
+              this.percentProgressBar = innerRes.percent
+              this.messageProgressBar = `width : ${innerRes.percent}%`
               if(innerRes.hide){
                 this.mensajeProgressBar = `${innerRes.message}`
-
                 this.modalRef.close()
                 this.toastr.success("Se terminó de Imprimir")
                 setTimeout(() => 
@@ -214,6 +218,7 @@ export class SesionClienteComponent implements OnInit {
       this.quioscoService.Print(this.sorteoId,this.clienteId,this.cantidad).subscribe({
         next:result =>{
           if(result.status){
+            this.modalRef.close()
             this.toastr.success(`${result.msg}`)
           }
           else{
@@ -221,10 +226,9 @@ export class SesionClienteComponent implements OnInit {
           }
         }
         ,complete:()=>{
-          this.toastr.success(`Ha ocurrido un error`)
         }
         ,error:()=>{
-          this.toastr.success(`Ha ocurrido un error`)
+          this.toastr.error(`Ha ocurrido un error`)
         }
       })
     }

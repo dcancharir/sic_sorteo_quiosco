@@ -8,7 +8,7 @@ import { LoginQuiosco } from '../model/LoginQuiosco'
 })
 export class QuioscoService {
   private readonly apiUrl  = "http://localhost:5148/api/"
-  private readonly localApiUrl = "http://localhost:7000/api/"
+  private readonly localApiUrl = "http://localhost:5163/api/"
   constructor(private httpclient:HttpClient) { }
   LoginCliente(model:LoginQuiosco):Observable<ResponseApi>{
     const url = `${this.apiUrl}quiosco/loginclient`
@@ -25,7 +25,7 @@ export class QuioscoService {
     return this.httpclient.get<ResponseApi>(url)
   }
   Print(sorteoid:number,clienteid:number,cantidad:number):Observable<ResponseApi>{
-    const url = `${this.localApiUrl}/printer/print/${sorteoid}/${clienteid}/${cantidad}`
+    const url = `${this.localApiUrl}printer/print/${sorteoid}/${clienteid}/${cantidad}`
     return this.httpclient.get<ResponseApi>(url)
   }
 }
