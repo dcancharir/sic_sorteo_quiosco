@@ -1,17 +1,21 @@
 import { Injectable } from '@angular/core'
 import * as signalR from '@microsoft/signalr'
 import { Observable,Subject } from 'rxjs'
+import { environment } from '../../environments/environment'
 @Injectable({
   providedIn: 'root'
 })
 export class SignalrService {
   hubConnection!:signalR.HubConnection
-  private readonly signalrUrl = 'http://localhost:5163/hubs/stock'
+  private readonly urlLocal = environment.url_local
   printMessageSubject = new Subject<{message:string,hide:boolean,serie:string,impresora:string,impreso:boolean,cantidadProcesados:number,percent:number}>()
   prinConnectionSubject = new Subject<string>()
   constructor() { 
+    if(this.urlLocal.endsWith('/')){
+      this.urlLocal = this.urlLocal.slice(0,-1)
+    }
     this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(this.signalrUrl,{
+    .withUrl(`${this.urlLocal}/hubs/stock`,{
       skipNegotiation:true,
       transport:signalR.HttpTransportType.WebSockets
     }) // SignalR hub URL

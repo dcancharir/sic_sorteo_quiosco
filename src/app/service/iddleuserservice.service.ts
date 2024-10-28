@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
+import { environment } from '../../environments/environment'
 @Injectable({
   providedIn: 'root'
 })
 export class IddleuserserviceService {
-  private IdleTime : number = 10000
-  private CountdownTime : number = 10000
+  private IdleTime : number = environment.tiempo_inactividad
+  private CountdownTime : number = environment.tiempo_conteo
   private timeoutId: any
   private countdownId: any
   private countdownValue!: number
