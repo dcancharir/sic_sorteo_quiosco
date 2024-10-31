@@ -1,4 +1,4 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA  } from '@angular/core';
+import { NgModule,CUSTOM_ELEMENTS_SCHEMA,APP_INITIALIZER   } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,6 +11,12 @@ import { FooterComponent } from './component/utilidades/footer/footer.component'
 import { NgSelectModule } from '@ng-select/ng-select'
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { ToastrModule } from 'ngx-toastr'
+import { ConfigService } from './service/config.service'
+export function initializeApp(configService:ConfigService){
+  return ():Promise<any>=>{
+    return configService.loadConfig().toPromise()
+  }
+}
 @NgModule({
   declarations: [
     AppComponent,
@@ -29,7 +35,14 @@ import { ToastrModule } from 'ngx-toastr'
     NgSelectModule,
     ToastrModule.forRoot({ progressBar: true, progressAnimation: 'decreasing', preventDuplicates: true, }),
   ],
-  providers: [],
+  providers: [
+    ConfigService,{
+      provide: APP_INITIALIZER,
+      useFactory: initializeApp,
+      deps: [ConfigService],
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
   schemas:[
     CUSTOM_ELEMENTS_SCHEMA

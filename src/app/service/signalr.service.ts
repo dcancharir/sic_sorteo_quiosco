@@ -11,9 +11,6 @@ export class SignalrService {
   printMessageSubject = new Subject<{message:string,hide:boolean,serie:string,impresora:string,impreso:boolean,cantidadProcesados:number,percent:number}>()
   prinConnectionSubject = new Subject<string>()
   constructor() { 
-    if(this.urlLocal.endsWith('/')){
-      this.urlLocal = this.urlLocal.slice(0,-1)
-    }
     this.hubConnection = new signalR.HubConnectionBuilder()
     .withUrl(`${this.urlLocal}/hubs/stock`,{
       skipNegotiation:true,
@@ -41,11 +38,6 @@ export class SignalrService {
       this.hubConnection.stop()
     }
   }
-  addPrintStatuListener():void{
-    this.hubConnection.on('ReceiveProgress',data=>{
-      this.printMessageSubject.next(data)
-    })
-  }
   receiveMessage(){
     return new Observable<any>((observer)=>{
       this.hubConnection.on('ReceiveProgress',data=>{
@@ -53,8 +45,4 @@ export class SignalrService {
       })
     })
   }
-  getPrintStatus():Observable<any>{
-    return this.printMessageSubject.asObservable()
-  }
-
 }

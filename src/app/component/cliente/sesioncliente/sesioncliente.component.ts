@@ -9,7 +9,9 @@ import { Cliente } from '../../../model/Cliente'
 import moment from 'moment'
 import { IddleuserserviceService } from '../../../service/iddleuserservice.service'
 import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
-import { SignalrService } from '../../../service/signalr.service';
+import { SignalrService } from '../../../service/signalr.service'
+import { Sala } from '../../../model/Sala'
+import { SalaService } from '../../../service/sala.service'
 @Component({
   selector: 'app-sesioncliente',
   templateUrl: './sesioncliente.component.html',
@@ -34,7 +36,7 @@ export class SesionClienteComponent implements OnInit {
   isUserIdle: boolean = false
   listResult : QuioscoResult[] = []
   cliente!:Cliente
-  uriSorteos : string = 'http://localhost:5148/'
+  uriLocal : string = ''
   quioscoId : number = 0
   fondo:string = 'assets/images/feeling-lucky-with-slot-machine-2023-11-27-05-20-01-utc.webp';
   logo:string = 'assets/logos/21.png'
@@ -47,6 +49,7 @@ export class SesionClienteComponent implements OnInit {
     private idleUserService : IddleuserserviceService,
     private modalService: NgbModal,
     private signalrService:SignalrService,
+    private salaService : SalaService
   ){
   }
   ngOnInit(): void {
@@ -56,6 +59,7 @@ export class SesionClienteComponent implements OnInit {
       if(this.cliente){
         this.clienteId = this.cliente.ClienteId
       }
+      this.cargarInfoSala()
       this.cargarInfoQuiosco()
       this.cargarDataImpresion()
       this.idleUserService.stop()
@@ -66,12 +70,26 @@ export class SesionClienteComponent implements OnInit {
       })
     }
   }
-  cargarInfoQuiosco(){
-    this.configService.loadConfig().subscribe({
-      next:result=>{
-        this.quioscoId = result.QuioscoId
+  cargarInfoSala(){
+    this.spinnerService.show()
+    this.salaService.GetSala().subscribe({
+      next:response=>{
+        if(response.status){
+          this.logo = `assets/logos/${response.value.Cod_Sala}.png`
+        }
+      },
+      complete:()=>{
+        this.spinnerService.hide()
+      },
+      error:(error)=>{
       }
     })
+  }
+  cargarInfoQuiosco(){
+    const ID_QUIOSCO = this.configService.getConfig('ID_QUIOSCO')
+    if(ID_QUIOSCO){
+      this.quioscoId = parseInt(ID_QUIOSCO);
+    }
   }
   cerrarSesion(){
     if(this.cliente){
@@ -194,6 +212,7 @@ export class SesionClienteComponent implements OnInit {
                 this.toastr.success("Se terminó de Imprimir")
                 setTimeout(() => 
                   {
+                    this.signalrService.stopSignalrConnection()
                     this.cargarDataImpresion()
                     this.progresactive=false;
                   },
@@ -215,7 +234,7 @@ export class SesionClienteComponent implements OnInit {
 
         }
       })
-      this.quioscoService.Print(this.sorteoId,this.clienteId,this.cantidad).subscribe({
+      this.quioscoService.Print(this.quioscoId,this.sorteoId,this.clienteId,this.cantidad).subscribe({
         next:result =>{
           if(result.status){
             this.modalRef.close()

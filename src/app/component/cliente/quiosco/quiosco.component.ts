@@ -8,7 +8,9 @@ import { ConfigService } from '../../../service/config.service'
 import { TipodocumentoService } from '../../../service/tipodocumento.service'
 import { QuioscoService } from '../../../service/quiosco.service'
 import { LoginQuiosco } from '../../../model/LoginQuiosco'
-
+import { environment } from '../../../../environments/environment'
+import { SalaService } from '../../../service/sala.service'
+import { Sala } from '../../../model/Sala'
 @Component({
   selector: 'app-sesionquiosco',
   templateUrl: './quiosco.component.html',
@@ -16,11 +18,12 @@ import { LoginQuiosco } from '../../../model/LoginQuiosco'
 })
 
 export class QuioscoComponent implements OnInit{
-  uriSorteos : string = 'http://localhost:5148/'
+  sala!:Sala
+  uriLocal : string = environment.url_local
   loginRequest!:LoginQuiosco
   quioscoId : number = 0
   fondo:string = 'assets/images/feeling-lucky-with-slot-machine-2023-11-27-05-20-01-utc.webp';
-  logo:string = 'assets/logos/21.png'
+  logo:string = ''
   listatipodocumento : TipoDocumento[] = []
   nrodocumento : string = '06793720'
   claveSeguridad: string = '0304'
@@ -37,7 +40,8 @@ export class QuioscoComponent implements OnInit{
     private spinnerService:NgxSpinnerService,
     private quioscoService : QuioscoService,   
     private toastr: ToastrService,
-    private route:Router
+    private route:Router,
+    private salaService:SalaService
   ){
   }
   ngOnInit(): void {
@@ -47,16 +51,31 @@ export class QuioscoComponent implements OnInit{
       })
     }
     else{
+      this.cargarInfoSala()
       this.cargarInfoQuiosco()
       this.cargarTipoDocumento()
     }
   }
-  cargarInfoQuiosco(){
-    this.configService.loadConfig().subscribe({
-      next:result=>{
-        this.quioscoId = result.QuioscoId
+  cargarInfoSala(){
+    this.spinnerService.show()
+    this.salaService.GetSala().subscribe({
+      next:response=>{
+        if(response.status){
+          this.logo = `assets/logos/${response.value.Cod_Sala}.png`
+        }
+      },
+      complete:()=>{
+        this.spinnerService.hide()
+      },
+      error:(error)=>{
       }
     })
+  }
+  cargarInfoQuiosco(){
+    const ID_QUIOSCO = this.configService.getConfig('ID_QUIOSCO')
+    if(ID_QUIOSCO){
+      this.quioscoId = parseInt(ID_QUIOSCO);
+    }
   }
   cargarTipoDocumento(){
     this.spinnerService.show()

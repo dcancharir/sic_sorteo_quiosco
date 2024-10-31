@@ -1,19 +1,27 @@
 import { Injectable } from '@angular/core'
 import { Subject } from 'rxjs'
-import { environment } from '../../environments/environment'
+import { ConfigService } from './config.service'
 @Injectable({
   providedIn: 'root'
 })
 export class IddleuserserviceService {
-  private IdleTime : number = environment.tiempo_inactividad
-  private CountdownTime : number = environment.tiempo_conteo
+  private IdleTime : number = 0
+  private CountdownTime : number = 0
   private timeoutId: any
   private countdownId: any
   private countdownValue!: number
   userInactive = new Subject<{inactive :boolean , message : string, logout : boolean}>()
-  constructor() { 
-    this.reset()
-    this.initListener()
+  constructor(private configService : ConfigService) { 
+    const TIEMPO_ESPERA_INACTIVIDAD = this.configService.getConfig('TIEMPO_ESPERA_INACTIVIDAD')
+    const TIEMPO_ESPERA_CONTADOR = this.configService.getConfig('TIEMPO_ESPERA_CONTADOR')
+    if (TIEMPO_ESPERA_INACTIVIDAD && TIEMPO_ESPERA_CONTADOR) {
+      this.IdleTime = parseInt(TIEMPO_ESPERA_INACTIVIDAD);
+      this.CountdownTime = parseInt(TIEMPO_ESPERA_CONTADOR);
+      this.reset()
+      this.initListener()
+    } else {
+      console.error("Configuración 'TIEMPO_ESPERA_INACTIVIDAD' o 'TIEMPO_ESPERA_CONTADOR' no encontrada.");
+    }
   }
   initListener() {
     window.addEventListener('mousemove', () => this.reset())
