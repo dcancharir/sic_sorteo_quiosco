@@ -1,3 +1,14 @@
+:host {
+    display: block;
+    width: 100%; /* Ancho por defecto */
+  }
+  
+  @media (max-width: 1280px) { /* Ajustar según el ancho máximo del All-in-One */
+    :host {
+      width: 80%; /* Ancho del 80% en pantallas más pequeñas */
+      margin: 0 auto; /* Centrar horizontalmente */
+    }
+  }
 .header{
     border-bottom: 0px !important;
 }
@@ -12,6 +23,35 @@ label{
     font-size: 20px;
     text-transform: uppercase;
 }
+input:focus{
+    border: 1px solid red;
+}
 .form-control{
     font-size: 30px;
+}
+.keyboard {
+    display: flex;
+    flex-direction: column;
+}
+
+.keyBoardRow {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+}
+
+.key {
+    width: 55px;
+    height: 55px;
+    border: 1px solid #ccc;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 2px;
+    cursor: pointer;
+    background-color:#1d285a ;
+}
+
+.key:hover {
+    background-color: #e5e5e5;
 }

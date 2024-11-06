@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core'
+import { Component, OnInit,ViewChild,ElementRef } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { NgxSpinnerService } from "ngx-spinner"
 import { ToastrService } from 'ngx-toastr'
@@ -18,6 +18,9 @@ import { Sala } from '../../../model/Sala'
 })
 
 export class QuioscoComponent implements OnInit{
+  @ViewChild('nrodocumento_input') nrodocumento_input!:ElementRef
+  @ViewChild('clave_input') codigo_input!:ElementRef
+  currentInput : 'nrodocumento_input'|'clave_input' = 'nrodocumento_input'
   sala!:Sala
   uriLocal : string = environment.url_local
   loginRequest!:LoginQuiosco
@@ -43,6 +46,15 @@ export class QuioscoComponent implements OnInit{
     private route:Router,
     private salaService:SalaService
   ){
+  }
+  ngAfterViewInit() {
+    this.setFocus()
+  }
+  setFocus(){
+    this.nrodocumento_input.nativeElement.focus()
+  }
+  onFocus(inputName: 'nrodocumento_input' | 'clave_input') {
+    this.currentInput = inputName;
   }
   ngOnInit(): void {
     if(localStorage.getItem("cliente")){
@@ -127,6 +139,28 @@ export class QuioscoComponent implements OnInit{
     else{
       this.toastr.warning("Complete los campos obligatorios")
     }
+  }
+  addChar(value:string){
+    value = value.toUpperCase()
+    if(this.currentInput == 'nrodocumento_input'){
+      this.nrodocumento += value
+    }
+    else if(this.currentInput == 'clave_input'){
+      if(this.claveSeguridad.length<4){
+        this.claveSeguridad +=value
+      }
+    }
+  }
+  backspace(){
+    if(this.currentInput == 'nrodocumento_input'){
+      this.nrodocumento = ''
+    }
+    else if(this.currentInput == 'clave_input'){
+      this.claveSeguridad = ''
+    }
+  }
+  enter(){
+    this.loginCliente()
   }
 }
 

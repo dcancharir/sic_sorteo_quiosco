@@ -11,7 +11,7 @@ import { FooterComponent } from './component/utilidades/footer/footer.component'
 import { NgSelectModule } from '@ng-select/ng-select'
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { ToastrModule } from 'ngx-toastr'
-import { ConfigService } from './service/config.service'
+import { ConfigService } from './service/config.service';
 export function initializeApp(configService:ConfigService){
   return ():Promise<any>=>{
     return configService.loadConfig().toPromise()
@@ -22,7 +22,7 @@ export function initializeApp(configService:ConfigService){
     AppComponent,
     QuioscoComponent,
     SesionClienteComponent,
-    FooterComponent
+    FooterComponent,
   ],
   imports: [
     BrowserModule,
