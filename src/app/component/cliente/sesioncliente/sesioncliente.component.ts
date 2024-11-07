@@ -65,7 +65,7 @@ export class SesionClienteComponent implements OnInit {
       this.idleUserService.stop()
     }
     else{
-      this.route.navigate(['sesioncliente'],{
+      this.route.navigate(['quiosco'],{
         replaceUrl:true
       })
     }
