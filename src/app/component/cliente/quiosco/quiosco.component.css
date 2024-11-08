@@ -1,14 +1,3 @@
-:host {
-    display: block;
-    width: 100%; /* Ancho por defecto */
-  }
-  
-  @media (max-width: 1280px) { /* Ajustar según el ancho máximo del All-in-One */
-    :host {
-      width: 80%; /* Ancho del 80% en pantallas más pequeñas */
-      margin: 0 auto; /* Centrar horizontalmente */
-    }
-  }
 .header{
     border-bottom: 0px !important;
 }
