@@ -1,7 +1,7 @@
 <ngx-spinner type="pacman"></ngx-spinner>
-<div class="wrapper">
-    <div class="content shadow-sm " style="padding-bottom: 58px;">
-        <header class="header">
+<div class="wrapper" style="max-height: 100vh; overflow: hidden;" >
+    <div class="content shadow-sm " >
+        <header class="header" style="position: absolute; left: 0; top: 0;">
             <!-- Fixed navbar -->
             <nav class="container-fluid">
                 <div class="row">
@@ -25,14 +25,14 @@
             <div class="overlay_gradient"></div>
             <div class="background_dots"></div>
         </div>
-
+        <div class="text-center mb-4" >
+            <img style="width: 160px;margin: auto;filter: contrast(150%);" class="img_response" src="{{logo}}" alt="">
+        </div>
         <!-- Main container starts -->
-        <div class="container main-container" style="margin-top: -27px;" id="main-container">
-            <div class="row login-row-height">
-                <div class="col-12 col-md-10 col-lg-8 offset-lg-2 offset-md-1  align-self-center">
-                    <div class="text-center mb-4">
-                        <img style="width: 240px;margin: auto;filter: contrast(150%);" class="img_response" src="{{logo}}" alt="">
-                    </div>
+        <div class="container main-container"   id="main-container" style="transform: scale(0.8) translateY(-90px);">
+            <div class="row login-row-height"  >
+                <div class="col-12 col-md-10 col-lg-8 offset-lg-2 offset-md-1  align-self-center" >
+                    
 
                     <div class="card border-red shadow-lg blur mb-4">
                         <div class="card-body pt-3" style="color: #fff;padding-left: 32px;padding-right: 32px;">
@@ -142,6 +142,24 @@
             </div>
         </div>
     </div>
-    <app-footer></app-footer>
+    <footer class="footer" style="margin-top: -58px; position: absolute;bottom: 0; width: 100%;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md text-center text-md-left align-self-center">
+                    <p>Todos los derechos reservados
+                        <a href="javascript:void(0)"></a>
+                    </p>
+                </div>
+                <div class="col-12 col-md-auto text-center text-md-right">
+                    <ul class="nav justify-content-center justify-md-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="javascript:void(0)">&#64; 2024</a>
+                        </li>
+    
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
 </div>
 
