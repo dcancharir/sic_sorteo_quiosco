@@ -1,0 +1,183 @@
+<ngx-spinner type="pacman"></ngx-spinner>
+<div class="wrapper">
+    <div class="content shadow-sm " style="padding-bottom: 58px;">
+        <header class="header">
+            <!-- Fixed navbar -->
+            <nav class="container-fluid">
+                <div class="row">
+                    <div class="col align-self-center">
+                        <a href="javascript:void(0)" class="logo text-white">
+                            <div class="logo-text">
+                                <h5 class="fs22 mb-0"><span class="text-danger">Sic</span> - Sorteos <sup
+                                        class="badge badge-danger">v2</sup></h5>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </nav>
+        </header>
+        <div class="background">
+            <div class="bg_img">
+                <img class="img_response" src="{{fondo}}" alt="">
+            </div>
+
+            <div class="overlay_gradient"></div>
+            <div class="background_dots"></div>
+        </div>
+
+        <!-- Main container starts -->
+        <div class="container main-container" style="margin-top: -27px;" id="main-container">
+            <div class="row login-row-height">
+                <div class="col-12 col-md-12 col-lg-12  align-self-center">
+                    <div class="card border-red shadow-lg blur mb-4">
+                        <div class="card-body pt-5" style="color: #fff;padding-left: 32px;padding-right: 32px;">
+                            <h1 class="text-center">Configuración</h1>
+                            <form  autocomplete="off" [autocomplete]="false" [formGroup]="onCreateForm">
+                                <div class="row">
+                                    <div *ngFor="let configuracion of listaConfiguraciones; let i = index" class="col-md-6">
+                                        <label for="ConfiguracionQuioscoId{{i}}">{{ configuracion.Descripcion }}</label>
+                                    
+                                        <!-- Input para ConfiguracionQuioscoId (solo lectura) -->
+                                        <input
+                                            type="hidden"
+                                            id="ConfiguracionQuioscoId{{i}}"
+                                            [value]="configuracion.ConfiguracionQuioscoId"
+                                            disabled
+                                            class="form-control"
+                                        />
+                                    
+                                        <!-- Input para Valor (editable) -->
+                                        <input
+                                            type="text"
+                                            [ngModelOptions]="{standalone:true}"
+                                            [(ngModel)]="configuracion.Valor"
+                                            name="Valor{{i}}"
+                                            id="Valor{{i}}"
+                                            required
+                                            class="form-control"
+                                        />
+                                        </div>
+                                    <div class="col-md-12 mt-2">
+                                        <div class="form-group ">
+                                            <button (click)="guardarConfiguracion()"
+                                                class=" btn btn-warning btn-block">GuardarConfiguracion
+                                                <i class="material-icons md-18">arrow_forward</i></button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group text-center">
+                                            <label>Ingrese <span class="text-danger">ID</span>  de quiosco para registrar Dispositivo</label>
+                                            <input type="text" #usu_nombre_input onClick="this.select();"
+                                                formControlName="id"
+                                                class="form-control rounded-0 text-center  mb-1" placeholder="" required="">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-2">
+                                        <div class="form-group ">
+                                            <button (click)="guardarConfiguracion()"
+                                                class=" btn btn-warning btn-block">GuardarConfiguracion
+                                                <i class="material-icons md-18">arrow_forward</i></button>
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12 col-lg-12  align-self-center">
+                    <div class="card border-red shadow-lg blur mb-4">
+                        <div class="card-body pt-5" style="color: #fff;padding-left: 32px;padding-right: 32px;">
+                            <h1 class="text-center">Impresoras</h1>
+                            <hr>
+                            <div class="col-md-12 mt-2">
+                                <div class="form-group ">
+                                    <button (click)="abrirModalNuevaImpresora()"
+                                        class=" btn btn-warning btn-block">Nueva Impresora
+                                        <i class="material-icons md-18">add</i></button>
+                                </div>
+                            </div>
+                            <table class="table table-sm table-bordered table-striped table-hover display " width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>NOMBRE</th>
+                                        <th>ACCIÓN</th>
+        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let registro of listaImpresoras">
+                                        <td style="font-size: 22px;">{{ registro.Nombre }}</td>
+                                        <td class="text-center"><button class="btn btn-success"
+                                                (click)="eliminarImpresora(registro.ImpresoraId)"><i
+                                                    class="fa fa-trash"></i> Eliminar</button></td>
+                                    </tr>
+        
+                                    <tr *ngIf="listaImpresoras.length==0">
+                                        <td colspan="3" class="text-center"><span class="badge badge-warning">No tiene
+                                                registros</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Main container ends -->
+    </div>
+    <footer class="footer" style="margin-top: -58px;">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12 col-md text-center text-md-left align-self-center">
+                    <p>Todos los derechos reservados
+                        <a href="javascript:void(0)"></a>
+                    </p>
+                </div>
+                <div class="col-12 col-md-auto text-center text-md-right">
+                    <ul class="nav justify-content-center justify-md-content-end">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="javascript:void(0)">&#64; 2024</a>
+                        </li>
+
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+</div>
+<ng-template class="bg-danger" #modalImpresora let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Agregar Impresora</h4>
+        <button type="button" class="close btn-sm" aria-label="Close" (click)="modal.dismiss('Cross click')"><i
+                class="material-icons icon md-18">close</i></button>
+    </div>
+    <div class="modal-body text-light text-center">
+        <div class="row">
+            <div class="col-lg-12 col-md-12">
+                <div class="form-group ">
+                    <div class="form-group mb-0">
+                        <label for="">Ingrese nombre de impresora </label>
+                        <input type="text" [(ngModel)]="impresoraLocal.Nombre" [value]="impresoraLocal.Nombre"
+                            class="form-control" placeholder="Nombre de Impresora">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 mt-2">
+                <div class="form-group ">
+                    <button (click)="guardarImpresora()" class=" btn btn-primary btn-block">GUARDAR IMPRESORA
+                        <i class="material-icons md-18">arrow_forward</i></button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-danger" (click)="modal.dismiss()">Cerrar</button>
+    </div>
+
+</ng-template>
+<!-- <app-confirmdialog></app-confirmdialog> -->

@@ -12,6 +12,7 @@ import { NgSelectModule } from '@ng-select/ng-select'
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { ToastrModule } from 'ngx-toastr'
 import { ConfigService } from './service/config.service';
+import { ConfiguracionquioscoComponent } from './component/configuracion/configuracionquiosco/configuracionquiosco.component';
 export function initializeApp(configService:ConfigService){
   return ():Promise<any>=>{
     return configService.loadConfig().toPromise()
@@ -23,6 +24,7 @@ export function initializeApp(configService:ConfigService){
     QuioscoComponent,
     SesionClienteComponent,
     FooterComponent,
+    ConfiguracionquioscoComponent,
   ],
   imports: [
     BrowserModule,
