@@ -2,17 +2,18 @@ import { Injectable } from '@angular/core'
 import * as signalR from '@microsoft/signalr'
 import { Observable,Subject } from 'rxjs'
 import { environment } from '../../environments/environment'
+import { SignalrModel } from '../model/SignalrModel'
 @Injectable({
   providedIn: 'root'
 })
 export class SignalrService {
   hubConnection!:signalR.HubConnection
   private readonly urlLocal = environment.url_local
-  printMessageSubject = new Subject<{message:string,hide:boolean,serie:string,impresora:string,impreso:boolean,cantidadProcesados:number,percent:number}>()
+  printMessageSubject = new Subject<SignalrModel>()
   prinConnectionSubject = new Subject<string>()
   constructor() { 
     this.hubConnection = new signalR.HubConnectionBuilder()
-    .withUrl(`${this.urlLocal}/hubs/stock`,{
+    .withUrl(`${this.urlLocal}/hubs/print`,{
       skipNegotiation:true,
       transport:signalR.HttpTransportType.WebSockets
     }) // SignalR hub URL
@@ -34,7 +35,7 @@ export class SignalrService {
     })
   }
   stopSignalrConnection():void{
-    if(this.hubConnection!=null){
+    if(this.hubConnection){
       this.hubConnection.stop()
     }
   }

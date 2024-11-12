@@ -94,6 +94,9 @@
                 <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1">
                     <p class="text-progress">{{mensajeProgressBar}}</p>
                 </div>
+                <div class="col-lg-10 offset-lg-1 col-md-10 offset-md-1 mb-2">
+                    <progressbar [max]="totalCuponesProgress" [value]="cuponesProcesados" type="danger" [striped]="true" [animate]="true"><i>{{cuponesProcesados}} / {{totalCuponesProgress}}</i></progressbar>
+                </div>
             </div>
         </div>
     </div>

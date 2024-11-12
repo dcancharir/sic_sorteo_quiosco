@@ -13,6 +13,7 @@ import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { ToastrModule } from 'ngx-toastr'
 import { ConfigService } from './service/config.service';
 import { ConfiguracionquioscoComponent } from './component/configuracion/configuracionquiosco/configuracionquiosco.component';
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar'
 export function initializeApp(configService:ConfigService){
   return ():Promise<any>=>{
     return configService.loadConfig().toPromise()
@@ -36,6 +37,7 @@ export function initializeApp(configService:ConfigService){
     ReactiveFormsModule,
     NgSelectModule,
     ToastrModule.forRoot({ progressBar: true, progressAnimation: 'decreasing', preventDuplicates: true, }),
+    ProgressbarModule.forRoot()
   ],
   providers: [
     ConfigService,{

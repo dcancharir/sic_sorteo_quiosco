@@ -1,5 +1,6 @@
 import { Component, OnInit, TemplateRef,ViewChild,ElementRef } from '@angular/core';
-import { Router } from '@angular/router'
+import { Router,ActivatedRoute } from '@angular/router'
+import { Location } from '@angular/common'
 import { ConfigService } from '../../../service/config.service'
 import { NgxSpinnerService } from "ngx-spinner"
 import { ToastrService } from 'ngx-toastr'
@@ -18,6 +19,8 @@ import { SalaService } from '../../../service/sala.service'
   styleUrl: './sesioncliente.component.css'
 })
 export class SesionClienteComponent implements OnInit {
+  totalCuponesProgress : number = 0
+  cuponesProcesados : number = 0
   messageProgressBar : string = ''
   percentProgressBar : number = 0
   mensajeProgressBar : string = ''
@@ -49,7 +52,9 @@ export class SesionClienteComponent implements OnInit {
     private idleUserService : IddleuserserviceService,
     private modalService: NgbModal,
     private signalrService:SignalrService,
-    private salaService : SalaService
+    private salaService : SalaService,
+    private activatedRoute: ActivatedRoute, 
+    private location: Location
   ){
   }
   ngOnInit(): void {
@@ -65,9 +70,10 @@ export class SesionClienteComponent implements OnInit {
       this.idleUserService.stop()
     }
     else{
-      this.route.navigate(['quiosco'],{
-        replaceUrl:true
-      })
+      this.redirectToSesionCliente()
+      // this.route.navigate(['quiosco'],{
+      //   replaceUrl:true
+      // })
     }
   }
   cargarInfoSala(){
@@ -98,9 +104,10 @@ export class SesionClienteComponent implements OnInit {
         next:result=>{
           if(result.status){
             localStorage.removeItem("cliente")
-            this.route.navigate(['quiosco'],{
-              replaceUrl:true
-            })
+            this.redirectToSesionCliente()
+            // this.route.navigate(['quiosco'],{
+            //   replaceUrl:true
+            // })
           }
           else{
             this.toastr.error(result.msg)
@@ -206,6 +213,8 @@ export class SesionClienteComponent implements OnInit {
               this.mensajeProgressBar = `${innerRes.serie} - ${innerRes.impreso?'IMPRESO':'ERROR'}`
               this.percentProgressBar = innerRes.percent
               this.messageProgressBar = `width : ${innerRes.percent}%`
+              this.totalCuponesProgress = innerRes.totalCupones
+              this.cuponesProcesados = innerRes.cantidadProcesados
               if(innerRes.hide){
                 this.mensajeProgressBar = `${innerRes.message}`
                 this.modalRef.close()
@@ -254,5 +263,8 @@ export class SesionClienteComponent implements OnInit {
     else{
       this.toastr.error("Verifique cantidad de cupones")
     }
+  }
+  redirectToSesionCliente() {
+    this.route.navigate(['quiosco'], { replaceUrl: true })
   }
 }
