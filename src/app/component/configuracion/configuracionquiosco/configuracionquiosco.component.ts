@@ -9,6 +9,7 @@ import { ConfiguracionQuioscoLocal } from '../../../model/ConfiguracionQuioscoLo
 import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms'
 import { ImpresoraLocal } from '../../../model/ImpresoraLocal';
 import { NgbModal, ModalDismissReasons,NgbProgressbarConfig,NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
+import { ToastrService } from 'ngx-toastr'
 @Component({
   selector: 'app-configuracionquiosco',
   templateUrl: './configuracionquiosco.component.html',
@@ -24,10 +25,10 @@ export class ConfiguracionquioscoComponent implements OnInit{
   logo:string = ''
   uriLocal : string = environment.url_local
   onCreateForm = this.formBuilder.group({
-    'id': ['', Validators.compose([
-      Validators.required,
-      Validators.pattern('^[0-9]*$')
-    ])],
+    // 'id': ['', Validators.compose([
+    //   Validators.required,
+    //   Validators.pattern('^[0-9]*$')
+    // ])],
   });
     closeResult = ''
   constructor(
@@ -35,6 +36,7 @@ export class ConfiguracionquioscoComponent implements OnInit{
     private configuracionQuioscoService : ConfiguracionquioscoService,
     private formBuilder: FormBuilder,
     private modalService: NgbModal,
+    private toastr: ToastrService,
   ) {
   }
   ngOnInit(): void {
@@ -48,6 +50,7 @@ export class ConfiguracionquioscoComponent implements OnInit{
   }
   abrirModalNuevaImpresora() {
     // this.cantidad = cantidad;
+    this.impresoraLocal.Nombre = ''
     this.open(this.templateModalImpresora, 'xs');
   }
   open(modal: TemplateRef<any>, size: string) {
@@ -84,7 +87,13 @@ export class ConfiguracionquioscoComponent implements OnInit{
     this.spinnerService.show()
     this.configuracionQuioscoService.guardarConfiguracionQuiosco(this.listaConfiguraciones).subscribe({
       next:response=>{
-          this.cargarConfiguracionQuiosco()
+        if(response){
+          this.toastr.success("Acción realizada")
+        }
+        else{
+          this.toastr.error("No se pudo realizar la acción")
+        }
+        this.cargarConfiguracionQuiosco()
       },
       complete:()=>{
         this.spinnerService.hide()
@@ -114,7 +123,14 @@ export class ConfiguracionquioscoComponent implements OnInit{
       this.impresoraLocal.Estado = 1
       this.configuracionQuioscoService.guardarImpresora(this.impresoraLocal).subscribe({
         next:response=>{
+          if(response){
+            this.toastr.success("Acción realizada")
+          }
+          else{
+            this.toastr.error("No se pudo realizar la acción")
+          }
           this.listarImpresoras()
+          this.modalRef?.close()
         },
         complete:()=>{
           this.spinnerService.hide()
@@ -130,6 +146,12 @@ export class ConfiguracionquioscoComponent implements OnInit{
   
       this.configuracionQuioscoService.eliminarImpresora(id).subscribe({
         next:response=>{
+          if(response){
+            this.toastr.success("Acción realizada")
+          }
+          else{
+            this.toastr.error("No se pudo realizar la acción")
+          }
           this.listarImpresoras()
         },
         complete:()=>{
