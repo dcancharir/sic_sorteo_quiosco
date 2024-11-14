@@ -28,8 +28,8 @@ export class QuioscoComponent implements OnInit{
   fondo:string = 'assets/images/feeling-lucky-with-slot-machine-2023-11-27-05-20-01-utc.webp';
   logo:string = ''
   listatipodocumento : TipoDocumento[] = []
-  nrodocumento : string = '06793720'
-  claveSeguridad: string = '0304'
+  nrodocumento : string = ''
+  claveSeguridad: string = ''
   tipodocumento : number = 0
   onCreateForm = this.formBuilder.group({
   'claveSeguridad': [''],
