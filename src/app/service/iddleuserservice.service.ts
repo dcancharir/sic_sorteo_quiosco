@@ -12,17 +12,25 @@ export class IddleuserserviceService {
   private countdownValue!: number
   userInactive = new Subject<{inactive :boolean , message : string, logout : boolean}>()
   constructor(private configService : ConfigService) { 
-    const TIEMPO_ESPERA_INACTIVIDAD = this.configService.getConfig('TIEMPO_ESPERA_INACTIVIDAD')
-    const TIEMPO_ESPERA_CONTADOR = this.configService.getConfig('TIEMPO_ESPERA_CONTADOR')
-    if (TIEMPO_ESPERA_INACTIVIDAD && TIEMPO_ESPERA_CONTADOR) {
-      this.IdleTime = parseInt(TIEMPO_ESPERA_INACTIVIDAD);
-      this.CountdownTime = parseInt(TIEMPO_ESPERA_CONTADOR);
-      this.reset()
-      this.initListener()
-    } else {
-      console.error("Configuración 'TIEMPO_ESPERA_INACTIVIDAD' o 'TIEMPO_ESPERA_CONTADOR' no encontrada.");
-    }
   }
+  setIdleTime(_idleTime:number){
+    this.IdleTime = _idleTime
+  }
+  setCountDownTime(_countdownTime:number){
+    this.CountdownTime = _countdownTime
+  }
+  // initConfigParams(){
+  //   const TIEMPO_ESPERA_INACTIVIDAD = this.configService.getConfig('TIEMPO_ESPERA_INACTIVIDAD')
+  //   const TIEMPO_ESPERA_CONTADOR = this.configService.getConfig('TIEMPO_ESPERA_CONTADOR')
+  //   if (TIEMPO_ESPERA_INACTIVIDAD && TIEMPO_ESPERA_CONTADOR) {
+  //     this.IdleTime = parseInt(TIEMPO_ESPERA_INACTIVIDAD);
+  //     this.CountdownTime = parseInt(TIEMPO_ESPERA_CONTADOR);
+  //     // this.reset()
+  //     // this.initListener()
+  //   } else {
+  //     console.error("Configuración 'TIEMPO_ESPERA_INACTIVIDAD' o 'TIEMPO_ESPERA_CONTADOR' no encontrada.");
+  //   }
+  // }
   initListener() {
     window.addEventListener('mousemove', () => this.reset())
     window.addEventListener('click', () => this.reset())

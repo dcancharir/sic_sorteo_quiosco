@@ -28,8 +28,8 @@ export class QuioscoComponent implements OnInit{
   fondo:string = 'assets/images/feeling-lucky-with-slot-machine-2023-11-27-05-20-01-utc.webp';
   logo:string = ''
   listatipodocumento : TipoDocumento[] = []
-  nrodocumento : string = ''
-  claveSeguridad: string = ''
+  nrodocumento : string = '00475109'
+  claveSeguridad: string = '1437'
   tipodocumento : number = 0
   onCreateForm = this.formBuilder.group({
   'claveSeguridad': [''],
@@ -63,8 +63,22 @@ export class QuioscoComponent implements OnInit{
       })
     }
     else{
+      this.configService.loadConfig().subscribe({
+        next:res=>{
+          console.log(res)
+          const ID_QUIOSCO = res.find(x=>x.ConfiguracionQuioscoId=="ID_QUIOSCO")?.Valor
+          if (ID_QUIOSCO) {
+            this.quioscoId = parseInt(ID_QUIOSCO)
+          } else {
+            console.error("Configuración no encontrada.");
+          }
+        },
+        error:err=>{
+          console.error("Error al cargar la configuración" , err)
+        }
+      })
       this.cargarInfoSala()
-      this.cargarInfoQuiosco()
+   
       this.cargarTipoDocumento()
     }
   }
@@ -83,12 +97,12 @@ export class QuioscoComponent implements OnInit{
       }
     })
   }
-  cargarInfoQuiosco(){
-    const ID_QUIOSCO = this.configService.getConfig('ID_QUIOSCO')
-    if(ID_QUIOSCO){
-      this.quioscoId = parseInt(ID_QUIOSCO);
-    }
-  }
+  // cargarInfoQuiosco(){
+  //   const ID_QUIOSCO = this.configService.getConfig('ID_QUIOSCO')
+  //   if(ID_QUIOSCO){
+  //     this.quioscoId = parseInt(ID_QUIOSCO);
+  //   }
+  // }
   cargarTipoDocumento(){
     this.spinnerService.show()
     this.tipoDocumentoService.GetTipoDocumento().subscribe({

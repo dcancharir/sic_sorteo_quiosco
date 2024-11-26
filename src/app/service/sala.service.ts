@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core'
 import { HttpClient } from '@angular/common/http'
 import { Observable } from 'rxjs'
-import { ConfigService } from './config.service'
 import { ResponseApi } from '../model/ResponseApi'
+import { environment } from '../../environments/environment'
 @Injectable({
   providedIn: 'root'
 })
 export class SalaService {
-  private apiUrl : string = ''
-  constructor(private httpclient:HttpClient,private configService : ConfigService) { }
+  private apiUrl : string = environment.url_local
+  constructor(private httpclient:HttpClient) { }
   GetSala():Observable<ResponseApi>{
-    this.apiUrl = `${this.configService.getConfig('URL_SERVIDOR_SORTEOS')}`
-    const url = `${this.apiUrl}/api/sala/get`
+    const url = `${this.apiUrl}/api/servidorsorteos/salaget`
     return this.httpclient.get<ResponseApi>(url)
   }
 }

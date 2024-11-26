@@ -1,6 +1,5 @@
 import { Component, OnInit, TemplateRef,ViewChild,ElementRef } from '@angular/core';
-import { Router,ActivatedRoute } from '@angular/router'
-import { Location } from '@angular/common'
+import { Router } from '@angular/router'
 import { ConfigService } from '../../../service/config.service'
 import { NgxSpinnerService } from "ngx-spinner"
 import { ToastrService } from 'ngx-toastr'
@@ -11,7 +10,6 @@ import moment from 'moment'
 import { IddleuserserviceService } from '../../../service/iddleuserservice.service'
 import { NgbModal, ModalDismissReasons,NgbModalRef } from '@ng-bootstrap/ng-bootstrap'
 import { SignalrService } from '../../../service/signalr.service'
-import { Sala } from '../../../model/Sala'
 import { SalaService } from '../../../service/sala.service'
 @Component({
   selector: 'app-sesioncliente',
@@ -52,9 +50,7 @@ export class SesionClienteComponent implements OnInit {
     private idleUserService : IddleuserserviceService,
     private modalService: NgbModal,
     private signalrService:SignalrService,
-    private salaService : SalaService,
-    private activatedRoute: ActivatedRoute, 
-    private location: Location
+    private salaService : SalaService
   ){
   }
   ngOnInit(): void {
@@ -65,9 +61,30 @@ export class SesionClienteComponent implements OnInit {
         this.clienteId = this.cliente.ClienteId
       }
       this.cargarInfoSala()
-      this.cargarInfoQuiosco()
+      // this.cargarInfoQuiosco()
       this.cargarDataImpresion()
-      this.idleUserService.stop()
+      this.configService.loadConfig().subscribe({
+        next:res=>{
+          console.log(res)
+          const TIEMPO_ESPERA_INACTIVIDAD = res.find(x=>x.ConfiguracionQuioscoId=='TIEMPO_ESPERA_INACTIVIDAD')?.Valor
+          const TIEMPO_ESPERA_CONTADOR = res.find(x=>x.ConfiguracionQuioscoId=='TIEMPO_ESPERA_CONTADOR')?.Valor
+          const ID_QUIOSCO = res.find(x=>x.ConfiguracionQuioscoId=='ID_QUIOSCO')?.Valor
+          if (TIEMPO_ESPERA_INACTIVIDAD && TIEMPO_ESPERA_CONTADOR && ID_QUIOSCO) {
+            this.quioscoId = parseInt(ID_QUIOSCO)
+            this.idleUserService.setIdleTime(parseInt(TIEMPO_ESPERA_INACTIVIDAD))
+            this.idleUserService.setCountDownTime(parseInt(TIEMPO_ESPERA_CONTADOR))
+            this.idleUserService.reset()
+            this.idleUserService.initListener()
+          } else {
+            console.error("Configuración 'TIEMPO_ESPERA_INACTIVIDAD' o 'TIEMPO_ESPERA_CONTADOR' no encontrada.");
+          }
+          // this.idleUserService.reset()
+          // this.idleUserService.initListener()
+        },
+        error:err=>{
+          console.error("Error al cargar la configuración" , err)
+        }
+      })
     }
     else{
       this.redirectToSesionCliente()
@@ -102,6 +119,11 @@ export class SesionClienteComponent implements OnInit {
       this.spinnerService.show()
       this.quioscoService.LogoutCliente(this.cliente.ClienteId).subscribe({
         next:result=>{
+          if(this.modalRef){
+            this.modalRef.close()
+          }
+          // this.modalRef.close()
+
           if(result.status){
             localStorage.removeItem("cliente")
             this.redirectToSesionCliente()

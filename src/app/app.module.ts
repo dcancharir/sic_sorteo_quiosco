@@ -11,14 +11,14 @@ import { FooterComponent } from './component/utilidades/footer/footer.component'
 import { NgSelectModule } from '@ng-select/ng-select'
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
 import { ToastrModule } from 'ngx-toastr'
-import { ConfigService } from './service/config.service';
+// import { ConfigService } from './service/config.service';
 import { ConfiguracionquioscoComponent } from './component/configuracion/configuracionquiosco/configuracionquiosco.component';
 import { ProgressbarModule } from 'ngx-bootstrap/progressbar'
-export function initializeApp(configService:ConfigService){
-  return ():Promise<any>=>{
-    return configService.loadConfig().toPromise()
-  }
-}
+// export function initializeApp(configService:ConfigService){
+//   return ():Promise<any>=>{
+//     return configService.loadConfig().toPromise()
+//   }
+// }
 @NgModule({
   declarations: [
     AppComponent,
@@ -40,12 +40,12 @@ export function initializeApp(configService:ConfigService){
     ProgressbarModule.forRoot()
   ],
   providers: [
-    ConfigService,{
-      provide: APP_INITIALIZER,
-      useFactory: initializeApp,
-      deps: [ConfigService],
-      multi: true
-    }
+    // ConfigService,{
+    //   provide: APP_INITIALIZER,
+    //   useFactory: initializeApp,
+    //   deps: [ConfigService],
+    //   multi: true
+    // }
   ],
   bootstrap: [AppComponent],
   schemas:[
