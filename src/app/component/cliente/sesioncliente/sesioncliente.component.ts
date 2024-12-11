@@ -187,7 +187,7 @@ export class SesionClienteComponent implements OnInit {
                 if(data.logout && data.inactive ) this.cerrarSesion()
               }
             )
-            this.listResult = result.value.sorteos
+            this.listResult = result.value
             this.toastr.success(result.msg)
           }
           else{

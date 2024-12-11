@@ -14492,6 +14492,6 @@ input::placeholder{
     border-radius: 0px;
     background: (193 130 130 / 31%);
 }
-.cbo-tipodocumento .ng-select-container {
+.custom-select .ng-select-container {
     border: 0;       /* Ejemplo de cambio de borde */
 }
