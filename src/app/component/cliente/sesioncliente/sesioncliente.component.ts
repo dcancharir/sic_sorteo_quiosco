@@ -117,31 +117,33 @@ export class SesionClienteComponent implements OnInit {
   cerrarSesion(){
     if(this.cliente){
       this.spinnerService.show()
-      this.quioscoService.LogoutCliente(this.cliente.ClienteId).subscribe({
-        next:result=>{
-          if(this.modalRef){
-            this.modalRef.close()
-          }
-          // this.modalRef.close()
+      localStorage.removeItem("cliente")
+      this.redirectToSesionCliente()
+      // this.quioscoService.LogoutCliente(this.cliente.ClienteId).subscribe({
+      //   next:result=>{
+      //     if(this.modalRef){
+      //       this.modalRef.close()
+      //     }
+      //     // this.modalRef.close()
 
-          if(result.status){
-            localStorage.removeItem("cliente")
-            this.redirectToSesionCliente()
-            // this.route.navigate(['quiosco'],{
-            //   replaceUrl:true
-            // })
-          }
-          else{
-            this.toastr.error(result.msg)
-          }
-        },
-        complete:()=>{
-          this.spinnerService.hide()
-        },
-        error:()=>{
-          this.spinnerService.hide()
-        }
-      })
+      //     if(result.status){
+      //       localStorage.removeItem("cliente")
+      //       this.redirectToSesionCliente()
+      //       // this.route.navigate(['quiosco'],{
+      //       //   replaceUrl:true
+      //       // })
+      //     }
+      //     else{
+      //       this.toastr.error(result.msg)
+      //     }
+      //   },
+      //   complete:()=>{
+      //     this.spinnerService.hide()
+      //   },
+      //   error:()=>{
+      //     this.spinnerService.hide()
+      //   }
+      // })
     }
   }
   abrirModalImpresion(sorteoid: number, cantidad: number, nombreSorteo : string){
