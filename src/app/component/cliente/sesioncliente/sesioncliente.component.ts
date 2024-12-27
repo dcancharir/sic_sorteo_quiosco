@@ -115,8 +115,11 @@ export class SesionClienteComponent implements OnInit {
     }
   }
   cerrarSesion(){
+    this.spinnerService.hide()
+    if(this.modalRef){
+      this.modalRef.close()
+    }
     if(this.cliente){
-      this.spinnerService.show()
       localStorage.removeItem("cliente")
       this.redirectToSesionCliente()
       // this.quioscoService.LogoutCliente(this.cliente.ClienteId).subscribe({
