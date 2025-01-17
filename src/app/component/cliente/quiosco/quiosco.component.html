@@ -1,165 +1,238 @@
 <ngx-spinner type="pacman"></ngx-spinner>
-<div class="wrapper" style="max-height: 100vh; overflow: hidden;" >
-    <div class="content shadow-sm " >
-        <header class="header" style="position: absolute; left: 0; top: 0;">
-            <!-- Fixed navbar -->
-            <nav class="container-fluid">
-                <div class="row">
-                    <div class="col align-self-center">
-                        <a href="javascript:void(0)" class="logo text-white">
-                            <div class="logo-text">
-                                <h5 class="fs22 mb-0"><span class="text-danger">Sic</span> - Sorteos <sup
-                                        class="badge badge-danger">v2</sup></h5>
-                                <p class="text-uppercase fs11">Quiosco {{quioscoId}}</p>
-                            </div>
-                        </a>
+<div class="wrapper" style="max-height: 100vh; overflow: hidden">
+  <div class="content shadow-sm">
+    <header class="header" style="position: absolute; left: 0; top: 0">
+      <!-- Fixed navbar -->
+      <nav class="container-fluid">
+        <div class="row">
+          <div class="col align-self-center">
+            <a href="javascript:void(0)" class="logo text-white">
+              <span
+                (click)="refrescarPagina()"
+                class="btn btn-outline-danger mr-2"
+                ><i class="fa fa-refresh"></i
+              ></span>
+              <div class="logo-text">
+                <h5 class="fs22 mb-0">
+                  <span class="text-danger">Sic</span> - Sorteos
+                  <sup class="badge badge-danger">v2</sup>
+                </h5>
+                <p class="text-uppercase fs11">Quiosco {{ quioscoId }}</p>
+              </div>
+            </a>
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="background">
+      <div class="bg_img" style="display: block !important">
+        <img
+          class="img_response"
+          src="{{ fondo }}"
+          alt=""
+          style="filter: blur(6px)"
+        />
+      </div>
+
+      <div class="overlay_gradient"></div>
+      <div class="background_dots"></div>
+    </div>
+    <div class="text-center mb-4">
+      <img
+        style="width: 160px; margin: auto; filter: contrast(150%)"
+        class="img_response"
+        src="{{ logo }}"
+        alt=""
+      />
+    </div>
+    <!-- Main container starts -->
+    <div
+      class="container main-container"
+      id="main-container"
+      style="transform: scale(0.8) translateY(-90px)"
+    >
+      <div class="row login-row-height">
+        <div
+          class="col-12 col-md-10 col-lg-8 offset-lg-2 offset-md-1 align-self-center"
+        >
+          <div class="card border-red shadow-lg blur mb-4">
+            <div
+              class="card-body pt-3"
+              style="color: #fff; padding-left: 32px; padding-right: 32px"
+            >
+              <div>
+                <form
+                  autocomplete="off"
+                  [autocomplete]="false"
+                  [formGroup]="onCreateForm"
+                >
+                  <div class="row">
+                    <div class="col-lg-12 col-md-12">
+                      <div class="form-group">
+                        <label>Tipo Documento</label>
+                        <ng-select
+                          class="form-control custom-select"
+                          formControlName="tipodocumento"
+                          [(ngModel)]="tipodocumento"
+                          [clearable]="true"
+                          [searchable]="false"
+                          [multiple]="false"
+                        >
+                          <ng-option
+                            *ngFor="let e of listatipodocumento"
+                            [value]="e.TipoDocumentoId"
+                            >{{ e.Nombre }}
+                          </ng-option>
+                        </ng-select>
+                      </div>
                     </div>
-                </div>
-            </nav>
-        </header>
-        <div class="background">
-            <div class="bg_img" style="display: block !important;">
-                <img class="img_response" src="{{fondo}}" alt="" style="filter:blur(6px);">
-            </div>
 
-            <div class="overlay_gradient"></div>
-            <div class="background_dots"></div>
-        </div>
-        <div class="text-center mb-4" >
-            <img style="width: 160px;margin: auto;filter: contrast(150%);" class="img_response" src="{{logo}}" alt="">
-        </div>
-        <!-- Main container starts -->
-        <div class="container main-container"   id="main-container" style="transform: scale(0.8) translateY(-90px);">
-            <div class="row login-row-height"  >
-                <div class="col-12 col-md-10 col-lg-8 offset-lg-2 offset-md-1  align-self-center" >
-                    
-
-                    <div class="card border-red shadow-lg blur mb-4">
-                        <div class="card-body pt-3" style="color: #fff;padding-left: 32px;padding-right: 32px;">
-                            <div>
-                                <form autocomplete="off" [autocomplete]="false" [formGroup]="onCreateForm">
-
-                                    <div class="row">
-                                        <div class="col-lg-12 col-md-12">
-                                            <div class="form-group">
-                                                <label>Tipo Documento</label>
-                                                <ng-select  class="form-control custom-select" formControlName="tipodocumento"
-                                                    [(ngModel)]="tipodocumento" [clearable]="true"
-                                                    [searchable]="false" [multiple]="false">
-                                                    <ng-option *ngFor="let e of listatipodocumento"
-                                                        [value]="e.TipoDocumentoId">{{e.Nombre}} </ng-option>
-                                                </ng-select>
-                                            </div>
-                                        </div>
-    
-                                        <div class="col-lg-12 col-md-12">
-                                            <div class="form-group">
-                                                <label>Nro. Documento</label>
-                                                <input type="text" #nrodocumento_input
-                                                    [(ngModel)]="nrodocumento" formControlName="nrodocumento"
-                                                    class="form-control rounded-0  mb-1" placeholder="" (focus)="onFocus('nrodocumento_input')"
-                                                    readonly>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-12">
-                                            <div class="form-group">
-                                                <label>Ingrese su clave de seguridad y presione ENTRAR</label>
-                                                <input type="password" #clave_input
-                                                    [(ngModel)]="claveSeguridad" formControlName="claveSeguridad"
-                                                    class="form-control rounded-0 mb-1" placeholder="" (focus)="onFocus('clave_input')"
-                                                    readonly>
-                                            </div>
-                                        </div>
-                                        <!-- <div class="col-md-12 mt-2">
+                    <div class="col-lg-12 col-md-12">
+                      <div class="form-group">
+                        <label>Nro. Documento</label>
+                        <input
+                          type="text"
+                          #nrodocumento_input
+                          [(ngModel)]="nrodocumento"
+                          formControlName="nrodocumento"
+                          class="form-control rounded-0 mb-1"
+                          placeholder=""
+                          (focus)="onFocus('nrodocumento_input')"
+                          readonly
+                        />
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="form-group">
+                        <label
+                          >Ingrese su clave de seguridad y presione
+                          ENTRAR</label
+                        >
+                        <input
+                          type="password"
+                          #clave_input
+                          [(ngModel)]="claveSeguridad"
+                          formControlName="claveSeguridad"
+                          class="form-control rounded-0 mb-1"
+                          placeholder=""
+                          (focus)="onFocus('clave_input')"
+                          readonly
+                        />
+                      </div>
+                    </div>
+                    <!-- <div class="col-md-12 mt-2">
                                             <div class="form-group ">
                                                 <button (click)="loginCliente()" class=" btn btn-warning btn-block"
                                                     style="height: 50px;">Ingresar
                                                     <i class="material-icons md-18">arrow_forward</i></button>
                                             </div>
                                         </div> -->
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                  </div>
+                </form>
+              </div>
             </div>
-            <div class="row">
-                <div class="keyboard">
-                    <div class="keyBoardRow">
-                        <div class="key btn btn-warning" (click)="addChar('1')">1</div>
-                        <div class="key btn btn-warning" (click)="addChar('2')">2</div>
-                        <div class="key btn btn-warning" (click)="addChar('3')">3</div>
-                        <div class="key btn btn-warning" (click)="addChar('4')">4</div>
-                        <div class="key btn btn-warning" (click)="addChar('5')">5</div>
-                        <div class="key btn btn-warning" (click)="addChar('6')">6</div>
-                        <div class="key btn btn-warning" (click)="addChar('7')">7</div>
-                        <div class="key btn btn-warning" (click)="addChar('8')">8</div>
-                        <div class="key btn btn-warning" (click)="addChar('9')">9</div>
-                        <div class="key btn btn-warning" (click)="addChar('0')">0</div>
-                    </div>
-                    <div class="keyBoardRow">
-                        <div class="key btn btn-warning" (click)="addChar('q')">Q</div>
-                        <div class="key btn btn-warning" (click)="addChar('w')">W</div>
-                        <div class="key btn btn-warning" (click)="addChar('e')">E</div>
-                        <div class="key btn btn-warning" (click)="addChar('r')">R</div>
-                        <div class="key btn btn-warning" (click)="addChar('t')">T</div>
-                        <div class="key btn btn-warning" (click)="addChar('y')">Y</div>
-                        <div class="key btn btn-warning" (click)="addChar('u')">U</div>
-                        <div class="key btn btn-warning" (click)="addChar('i')">I</div>
-                        <div class="key btn btn-warning" (click)="addChar('o')">O</div>
-                        <div class="key btn btn-warning" (click)="addChar('p')">P</div>
-                    </div>
-                    <div class="keyBoardRow">
-                        <div class="key btn btn-warning" (click)="addChar('a')">A</div>
-                        <div class="key btn btn-warning" (click)="addChar('s')">S</div>
-                        <div class="key btn btn-warning" (click)="addChar('d')">D</div>
-                        <div class="key btn btn-warning" (click)="addChar('f')">F</div>
-                        <div class="key btn btn-warning" (click)="addChar('g')">G</div>
-                        <div class="key btn btn-warning" (click)="addChar('h')">H</div>
-                        <div class="key btn btn-warning" (click)="addChar('j')">J</div>
-                        <div class="key btn btn-warning" (click)="addChar('k')">K</div>
-                        <div class="key btn btn-warning" (click)="addChar('l')">L</div>
-                    </div>
-                    <div class="keyBoardRow">
-                        <div class="key btn btn-warning" (click)="addChar('z')">Z</div>
-                        <div class="key btn btn-warning" (click)="addChar('x')">X</div>
-                        <div class="key btn btn-warning" (click)="addChar('c')">C</div>
-                        <div class="key btn btn-warning" (click)="addChar('v')">V</div>
-                        <div class="key btn btn-warning" (click)="addChar('b')">B</div>
-                        <div class="key btn btn-warning" (click)="addChar('n')">N</div>
-                        <div class="key btn btn-warning" (click)="addChar('m')">M</div>
-                        <div class="key btn btn-warning" (click)="addChar('-')">-</div>
-                        <div class="key btn btn-warning" (click)="addChar('.')">.</div>
-                    </div>
-                    <div class="keyBoardRow">
-                        <div style="flex-grow: 1;"></div>
-                        <div class="key btn btn-warning" (click)="backspace()" style="flex-grow: 1;">LIMPIAR</div>
-                        <div class="key btn btn-warning" (click)="enter()" style="flex-grow: 1;">ENTRAR</div>
-                        <div style="flex-grow: 1;"></div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
+      </div>
+      <div class="row">
+        <div class="keyboard">
+          <div class="keyBoardRow">
+            <div class="key btn btn-warning" (click)="addChar('1')">1</div>
+            <div class="key btn btn-warning" (click)="addChar('2')">2</div>
+            <div class="key btn btn-warning" (click)="addChar('3')">3</div>
+            <div class="key btn btn-warning" (click)="addChar('4')">4</div>
+            <div class="key btn btn-warning" (click)="addChar('5')">5</div>
+            <div class="key btn btn-warning" (click)="addChar('6')">6</div>
+            <div class="key btn btn-warning" (click)="addChar('7')">7</div>
+            <div class="key btn btn-warning" (click)="addChar('8')">8</div>
+            <div class="key btn btn-warning" (click)="addChar('9')">9</div>
+            <div class="key btn btn-warning" (click)="addChar('0')">0</div>
+          </div>
+          <div class="keyBoardRow">
+            <div class="key btn btn-warning" (click)="addChar('q')">Q</div>
+            <div class="key btn btn-warning" (click)="addChar('w')">W</div>
+            <div class="key btn btn-warning" (click)="addChar('e')">E</div>
+            <div class="key btn btn-warning" (click)="addChar('r')">R</div>
+            <div class="key btn btn-warning" (click)="addChar('t')">T</div>
+            <div class="key btn btn-warning" (click)="addChar('y')">Y</div>
+            <div class="key btn btn-warning" (click)="addChar('u')">U</div>
+            <div class="key btn btn-warning" (click)="addChar('i')">I</div>
+            <div class="key btn btn-warning" (click)="addChar('o')">O</div>
+            <div class="key btn btn-warning" (click)="addChar('p')">P</div>
+          </div>
+          <div class="keyBoardRow">
+            <div class="key btn btn-warning" (click)="addChar('a')">A</div>
+            <div class="key btn btn-warning" (click)="addChar('s')">S</div>
+            <div class="key btn btn-warning" (click)="addChar('d')">D</div>
+            <div class="key btn btn-warning" (click)="addChar('f')">F</div>
+            <div class="key btn btn-warning" (click)="addChar('g')">G</div>
+            <div class="key btn btn-warning" (click)="addChar('h')">H</div>
+            <div class="key btn btn-warning" (click)="addChar('j')">J</div>
+            <div class="key btn btn-warning" (click)="addChar('k')">K</div>
+            <div class="key btn btn-warning" (click)="addChar('l')">L</div>
+          </div>
+          <div class="keyBoardRow">
+            <div class="key btn btn-warning" (click)="addChar('z')">Z</div>
+            <div class="key btn btn-warning" (click)="addChar('x')">X</div>
+            <div class="key btn btn-warning" (click)="addChar('c')">C</div>
+            <div class="key btn btn-warning" (click)="addChar('v')">V</div>
+            <div class="key btn btn-warning" (click)="addChar('b')">B</div>
+            <div class="key btn btn-warning" (click)="addChar('n')">N</div>
+            <div class="key btn btn-warning" (click)="addChar('m')">M</div>
+            <div class="key btn btn-warning" (click)="addChar('-')">-</div>
+            <div class="key btn btn-warning" (click)="addChar('.')">.</div>
+            <div
+              class="key btn btn-warning"
+              style="width: 100px !important"
+              (click)="addback()"
+            >
+              <i class="fa fa-arrow-left" aria-hidden="true"></i>
+            </div>
+          </div>
+          <div class="keyBoardRow">
+            <div style="flex-grow: 1"></div>
+            <div
+              class="key btn btn-warning"
+              (click)="backspace()"
+              style="flex-grow: 1"
+            >
+              LIMPIAR
+            </div>
+            <div
+              class="key btn btn-warning"
+              (click)="enter()"
+              style="flex-grow: 1"
+            >
+              ENTRAR
+            </div>
+            <div style="flex-grow: 1"></div>
+          </div>
+        </div>
+      </div>
     </div>
-    <footer class="footer" style="margin-top: -58px; position: absolute;bottom: 0; width: 100%;">
-        <div class="container-fluid">
-            <div class="row">
-                <div class="col-12 col-md text-center text-md-left align-self-center">
-                    <p>Todos los derechos reservados
-                        <a href="javascript:void(0)"></a>
-                    </p>
-                </div>
-                <div class="col-12 col-md-auto text-center text-md-right">
-                    <ul class="nav justify-content-center justify-md-content-end">
-                        <li class="nav-item">
-                            <a class="nav-link active" href="javascript:void(0)">&#64; 2024</a>
-                        </li>
-    
-                    </ul>
-                </div>
-            </div>
+  </div>
+  <footer
+    class="footer"
+    style="margin-top: -58px; position: absolute; bottom: 0; width: 100%"
+  >
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 col-md text-center text-md-left align-self-center">
+          <p>
+            Todos los derechos reservados
+            <a href="javascript:void(0)"></a>
+          </p>
         </div>
-    </footer>
+        <div class="col-12 col-md-auto text-center text-md-right">
+          <ul class="nav justify-content-center justify-md-content-end">
+            <li class="nav-item">
+              <a class="nav-link active" href="javascript:void(0)"
+                >&#64; 2024</a
+              >
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </footer>
 </div>
-

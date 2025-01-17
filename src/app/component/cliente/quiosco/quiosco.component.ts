@@ -1,4 +1,4 @@
-import { Component, OnInit,ViewChild,ElementRef } from '@angular/core'
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core'
 import { FormBuilder } from '@angular/forms'
 import { NgxSpinnerService } from "ngx-spinner"
 import { ToastrService } from 'ngx-toastr'
@@ -17,83 +17,83 @@ import { Sala } from '../../../model/Sala'
   styleUrls: ['./quiosco.component.css']
 })
 
-export class QuioscoComponent implements OnInit{
-  @ViewChild('nrodocumento_input') nrodocumento_input!:ElementRef
-  @ViewChild('clave_input') codigo_input!:ElementRef
-  currentInput : 'nrodocumento_input'|'clave_input' = 'nrodocumento_input'
-  sala!:Sala
-  uriLocal : string = environment.url_local
-  loginRequest!:LoginQuiosco
-  quioscoId : number = 0
-  fondo:string = 'assets/images/feeling-lucky-with-slot-machine-2023-11-27-05-20-01-utc.webp';
-  logo:string = ''
-  listatipodocumento : TipoDocumento[] = []
-  nrodocumento : string = ''
+export class QuioscoComponent implements OnInit {
+  @ViewChild('nrodocumento_input') nrodocumento_input!: ElementRef
+  @ViewChild('clave_input') codigo_input!: ElementRef
+  currentInput: 'nrodocumento_input' | 'clave_input' = 'nrodocumento_input'
+  sala!: Sala
+  uriLocal: string = environment.url_local
+  loginRequest!: LoginQuiosco
+  quioscoId: number = 0
+  fondo: string = 'assets/images/feeling-lucky-with-slot-machine-2023-11-27-05-20-01-utc.webp';
+  logo: string = ''
+  listatipodocumento: TipoDocumento[] = []
+  nrodocumento: string = ''
   claveSeguridad: string = ''
-  tipodocumento : number = 0
+  tipodocumento: number = 0
   onCreateForm = this.formBuilder.group({
-  'claveSeguridad': [''],
-  'nrodocumento': [''],
-  'tipodocumento': [''],
-})
+    'claveSeguridad': [''],
+    'nrodocumento': [''],
+    'tipodocumento': [''],
+  })
   constructor(
-    private configService:ConfigService,
+    private configService: ConfigService,
     private formBuilder: FormBuilder,
-    private tipoDocumentoService:TipodocumentoService,
-    private spinnerService:NgxSpinnerService,
-    private quioscoService : QuioscoService,   
+    private tipoDocumentoService: TipodocumentoService,
+    private spinnerService: NgxSpinnerService,
+    private quioscoService: QuioscoService,
     private toastr: ToastrService,
-    private route:Router,
-    private salaService:SalaService
-  ){
+    private route: Router,
+    private salaService: SalaService
+  ) {
   }
   ngAfterViewInit() {
     this.setFocus()
   }
-  setFocus(){
+  setFocus() {
     this.nrodocumento_input.nativeElement.focus()
   }
   onFocus(inputName: 'nrodocumento_input' | 'clave_input') {
     this.currentInput = inputName;
   }
   ngOnInit(): void {
-    if(localStorage.getItem("cliente")){
-      this.route.navigate(['sesioncliente'],{
-        replaceUrl:true
+    if (localStorage.getItem("cliente")) {
+      this.route.navigate(['sesioncliente'], {
+        replaceUrl: true
       })
     }
-    else{
+    else {
       this.configService.loadConfig().subscribe({
-        next:res=>{
+        next: res => {
           console.log(res)
-          const ID_QUIOSCO = res.find(x=>x.ConfiguracionQuioscoId=="ID_QUIOSCO")?.Valor
+          const ID_QUIOSCO = res.find(x => x.ConfiguracionQuioscoId == "ID_QUIOSCO")?.Valor
           if (ID_QUIOSCO) {
             this.quioscoId = parseInt(ID_QUIOSCO)
           } else {
             console.error("Configuración no encontrada.");
           }
         },
-        error:err=>{
-          console.error("Error al cargar la configuración" , err)
+        error: err => {
+          console.error("Error al cargar la configuración", err)
         }
       })
       this.cargarInfoSala()
-   
+
       this.cargarTipoDocumento()
     }
   }
-  cargarInfoSala(){
+  cargarInfoSala() {
     this.spinnerService.show()
     this.salaService.GetSala().subscribe({
-      next:response=>{
-        if(response.status){
+      next: response => {
+        if (response.status) {
           this.logo = `assets/logos/${response.value.Cod_Sala}.png`
         }
       },
-      complete:()=>{
+      complete: () => {
         this.spinnerService.hide()
       },
-      error:(error)=>{
+      error: (error) => {
       }
     })
   }
@@ -103,78 +103,95 @@ export class QuioscoComponent implements OnInit{
   //     this.quioscoId = parseInt(ID_QUIOSCO);
   //   }
   // }
-  cargarTipoDocumento(){
+  cargarTipoDocumento() {
     this.spinnerService.show()
     this.tipoDocumentoService.GetTipoDocumento().subscribe({
-      next:response=>{
-        if(response.status){
+      next: response => {
+        if (response.status) {
           this.listatipodocumento = response.value
-          if(this.listatipodocumento.length>0){
+          if (this.listatipodocumento.length > 0) {
             this.tipodocumento = this.listatipodocumento[0].TipoDocumentoId
           }
         }
       },
-      complete:()=>{
+      complete: () => {
         this.spinnerService.hide()
       },
-      error:(error)=>{
+      error: (error) => {
         this.spinnerService.hide()
       }
     })
   }
-  loginCliente(){
-    if(this.tipodocumento && this.nrodocumento && this.claveSeguridad){
+  loginCliente() {
+    if (this.tipodocumento && this.nrodocumento && this.claveSeguridad) {
       this.loginRequest = {
-        TipoDocumentoId : this.tipodocumento,
-        NroDocumento : this.nrodocumento,
-        ClaveSeguridad :  this.claveSeguridad
+        TipoDocumentoId: this.tipodocumento,
+        NroDocumento: this.nrodocumento,
+        ClaveSeguridad: this.claveSeguridad
       }
       this.spinnerService.show()
       this.quioscoService.LoginCliente(this.loginRequest).subscribe({
-        next:result=>{
-          if(result.status){
-            localStorage.setItem("cliente",JSON.stringify(result.value))
-            this.route.navigate(['sesioncliente'],{
-              replaceUrl:true
+        next: result => {
+          if (result.status) {
+            localStorage.setItem("cliente", JSON.stringify(result.value))
+            this.route.navigate(['sesioncliente'], {
+              replaceUrl: true
             })
           }
-          else{
+          else {
             this.toastr.error(result.msg)
           }
         },
-        complete:()=>{
+        complete: () => {
           this.spinnerService.hide()
         },
-        error:(error)=>{
+        error: (error) => {
           this.spinnerService.hide()
         }
       })
     }
-    else{
+    else {
       this.toastr.warning("Complete los campos obligatorios")
     }
   }
-  addChar(value:string){
+  addChar(value: string) {
     value = value.toUpperCase()
-    if(this.currentInput == 'nrodocumento_input'){
+    if (this.currentInput == 'nrodocumento_input') {
       this.nrodocumento += value
     }
-    else if(this.currentInput == 'clave_input'){
-      if(this.claveSeguridad.length<4){
-        this.claveSeguridad +=value
+    else if (this.currentInput == 'clave_input') {
+      if (this.claveSeguridad.length < 4) {
+        this.claveSeguridad += value
       }
     }
   }
-  backspace(){
-    if(this.currentInput == 'nrodocumento_input'){
+  backspace() {
+    if (this.currentInput == 'nrodocumento_input') {
       this.nrodocumento = ''
     }
-    else if(this.currentInput == 'clave_input'){
+    else if (this.currentInput == 'clave_input') {
       this.claveSeguridad = ''
     }
   }
-  enter(){
+  enter() {
     this.loginCliente()
+  }
+  addback() {
+    if (this.currentInput == 'nrodocumento_input') {
+      if (this.nrodocumento.length > 0) {
+        this.nrodocumento = this.nrodocumento.slice(0, -1)
+
+      }
+    }
+    else if (this.currentInput == 'clave_input') {
+      if (this.claveSeguridad.length > 0) {
+        this.claveSeguridad = this.claveSeguridad.slice(0, -1)
+
+      }
+    }
+  }
+  refrescarPagina() {
+    window.location.reload()
   }
 }
 
