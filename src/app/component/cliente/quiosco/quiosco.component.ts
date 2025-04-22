@@ -87,7 +87,7 @@ export class QuioscoComponent implements OnInit {
     this.salaService.GetSala().subscribe({
       next: response => {
         if (response.status) {
-          this.logo = `assets/logos/${response.value.Cod_Sala}.png`
+          this.logo = `assets/logos/${response.value.Cod_Sala.trim()}.png`
         }
       },
       complete: () => {
