@@ -30,8 +30,8 @@ input:focus{
 }
 
 .key {
-    width: 55px;
-    height: 55px;
+    width: 75px;
+    height: 75px;
     border: 1px solid #ccc;
     display: flex;
     align-items: center;
@@ -39,6 +39,7 @@ input:focus{
     margin: 2px;
     cursor: pointer;
     background-color:#1d285a ;
+    font-size: 2rem;
 }
 
 .key:hover {

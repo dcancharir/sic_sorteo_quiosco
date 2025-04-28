@@ -1,19 +1,25 @@
-import { NgModule,CUSTOM_ELEMENTS_SCHEMA,APP_INITIALIZER   } from '@angular/core';
+import { ConfirmdialogService } from './service/confirmdialog/confirmdialog.service';
+import {
+  NgModule,
+  CUSTOM_ELEMENTS_SCHEMA,
+  APP_INITIALIZER,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { QuioscoComponent } from './component/cliente/quiosco/quiosco.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { SesionClienteComponent } from './component/cliente/sesioncliente/sesioncliente.component';
 import { FooterComponent } from './component/utilidades/footer/footer.component';
-import { NgSelectModule } from '@ng-select/ng-select'
-import { BrowserAnimationsModule } from "@angular/platform-browser/animations"
-import { ToastrModule } from 'ngx-toastr'
+import { NgSelectModule } from '@ng-select/ng-select';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 // import { ConfigService } from './service/config.service';
 import { ConfiguracionquioscoComponent } from './component/configuracion/configuracionquiosco/configuracionquiosco.component';
-import { ProgressbarModule } from 'ngx-bootstrap/progressbar'
+import { ProgressbarModule } from 'ngx-bootstrap/progressbar';
+import { ConfirmdialogComponent } from './component/utilidades/confirmdialog/confirmdialog.component';
 // export function initializeApp(configService:ConfigService){
 //   return ():Promise<any>=>{
 //     return configService.loadConfig().toPromise()
@@ -26,7 +32,9 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar'
     SesionClienteComponent,
     FooterComponent,
     ConfiguracionquioscoComponent,
+    ConfirmdialogComponent,
   ],
+
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -36,10 +44,16 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar'
     HttpClientModule,
     ReactiveFormsModule,
     NgSelectModule,
-    ToastrModule.forRoot({ progressBar: true, progressAnimation: 'decreasing', preventDuplicates: true, }),
-    ProgressbarModule.forRoot()
+    ToastrModule.forRoot({
+      progressBar: true,
+      progressAnimation: 'decreasing',
+      preventDuplicates: true,
+    }),
+    ProgressbarModule.forRoot(),
   ],
+  exports: [ConfirmdialogComponent],
   providers: [
+    ConfirmdialogService,
     // ConfigService,{
     //   provide: APP_INITIALIZER,
     //   useFactory: initializeApp,
@@ -47,9 +61,8 @@ import { ProgressbarModule } from 'ngx-bootstrap/progressbar'
     //   multi: true
     // }
   ],
+
   bootstrap: [AppComponent],
-  schemas:[
-    CUSTOM_ELEMENTS_SCHEMA
-  ]
+  schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class AppModule { }
+export class AppModule {}

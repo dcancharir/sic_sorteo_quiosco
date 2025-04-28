@@ -23,7 +23,6 @@
                 </div>
             </nav>
         </header>
-       
         <div class="background">
             <div class="bg_img">
                 <img class="img_response" src="{{fondo}}" alt="" style="filter:blur(6px);">
@@ -48,6 +47,24 @@
                                 <h2 class="text-center text-warning">{{cliente.NombreCompleto}} </h2>
 
                             </div>
+
+
+
+                            <div class="row">
+                              <div class="form-group mt-4 d-flex align-items-center">
+                              <div class="col-12 col-md-5">
+                                <label for="impresionAutomatica" class="text-light mr-3">Tipo de Impersion</label>
+
+                              </div>
+                              <div class="col-12 col-md-7" (change)="onTipoImpresionChange($event)">
+
+                                <select id="impresionAutomatica" class="form-control">
+                                  <option value=false>Manual</option>
+                                  <option value=true>Automatica</option>
+                              </select>
+                              </div>
+                            </div>
+                          </div>
 
                         </div>
                     </div>
@@ -102,6 +119,8 @@
     </div>
     <app-footer></app-footer>
 </div>
+
+
 <ng-template class="bg-danger" #modalImpresion let-modal>
     <div class="modal-header">
         <h4 class="modal-title" id="modal-basic-title">{{sorteoSeleccionado}}</h4>
@@ -136,13 +155,13 @@
                     <div class="numericKey btn" (click)="addChar('1')">1</div>
                     <div class="numericKey btn" (click)="addChar('2')">2</div>
                     <div class="numericKey btn" (click)="addChar('3')">3</div>
-                   
+
                 </div>
                 <div class="numericKeyboardRow">
                     <div class="numericKey btn" (click)="addChar('4')">4</div>
                     <div class="numericKey btn" (click)="addChar('5')">5</div>
                     <div class="numericKey btn" (click)="addChar('6')">6</div>
-                   
+
                 </div>
                 <div class="numericKeyboardRow">
                     <div class="numericKey btn" (click)="addChar('7')">7</div>

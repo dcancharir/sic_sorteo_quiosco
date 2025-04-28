@@ -1,0 +1,25 @@
+<div *ngIf="message" class="modal" tabindex="-1" role="dialog" style="display:block!important">
+    <div class="modal-dialog custom-alert" role="document" style="margin-top: 12%;">
+        <div class="modal-content">
+            <div *ngIf="message?.type == 'confirm'" class="modal-body confirm_box">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center confirm-message" [innerHtml]="message.text"></div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <p class="confirm-button">
+                            <a class="mr-2" (click)="message.yesFn()">
+                                <button id="btn_si_confirm" class="btn btn-danger" style="width:80px ;">Si</button>
+                            </a>
+                            <a (click)="message.noFn()">
+                                <button id="btn_no_confirm" class="btn btn-primary" style="width:80px ;">No</button>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
