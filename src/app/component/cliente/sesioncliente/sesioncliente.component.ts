@@ -52,7 +52,8 @@ export class SesionClienteComponent implements OnInit {
   quioscoId: number = 0;
   fondo: string =
     'assets/images/feeling-lucky-with-slot-machine-2023-11-27-05-20-01-utc.webp';
-  logo: string = 'assets/logos/21.png';
+  logo: string = 'assets/logos/';
+
   constructor(
     private route: Router,
     private configService: ConfigService,
@@ -137,7 +138,7 @@ export class SesionClienteComponent implements OnInit {
 
     if (selectedValue !== undefined) {
       that.spinnerService.show();
-      that.idleUserService.updateImpresion2(clienteData).subscribe({
+      that.idleUserService.updateImpresion(clienteData).subscribe({
         next: (result) => {
           console.log(result, 'resultado');
           if (result.status) {
@@ -171,7 +172,7 @@ export class SesionClienteComponent implements OnInit {
     this.salaService.GetSala().subscribe({
       next: (response) => {
         if (response.status) {
-          this.logo = `assets/logos/${response.value.Cod_Sala}.png`;
+          this.logo = `assets/logos/${response.value.Cod_Sala.trim()}.png`;
         }
       },
       complete: () => {
