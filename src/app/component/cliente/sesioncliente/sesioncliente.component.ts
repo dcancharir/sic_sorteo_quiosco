@@ -51,8 +51,11 @@ export class SesionClienteComponent implements OnInit {
   uriLocal: string = '';
   quioscoId: number = 0;
   fondo: string =
+
     'assets/images/feeling-lucky-with-slot-machine-2023-11-27-05-20-01-utc.webp';
   logo: string = 'assets/logos/';
+
+  fechaValida : Boolean = false;
 
   constructor(
     private route: Router,
@@ -120,6 +123,11 @@ export class SesionClienteComponent implements OnInit {
       //   replaceUrl:true
       // })
     }
+    const diaActual = new Date().getDate();
+    console.log('diaActual', diaActual);
+    this.fechaValida = [1, 2, 3].includes(diaActual);
+
+
   }
 
   onTipoImpresionChange(event: any) {
