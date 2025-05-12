@@ -53,14 +53,14 @@
                             <div class="row">
                               <div class="form-group mt-4 d-flex align-items-center">
                               <div class="col-12 col-md-5">
-                                <label for="impresionAutomatica" class="text-light mr-3">Tipo de Impersion</label>
+                                <label for="impresionAutomatica" class="text-light mr-3">Tipo de Impresion</label>
 
                               </div>
                               <div class="col-12 col-md-7" (change)="onTipoImpresionChange($event)">
 
                                 <select id="impresionAutomatica" class="form-control" [disabled]="!fechaValida">
-                                  <option value=false>Manual</option>
-                                  <option value=true>Automatica</option>
+                                  <option value="1">Manual</option>
+                                  <option value="2">Automatica</option>
                               </select>
                               </div>
                             </div>

@@ -23,10 +23,10 @@ export interface Cliente {
   prohibido_string: string;
   prohibido_clase: string;
   TipoDocumento: TipoDocumento;
-  TipoImpresion: boolean;
+  TipoImpresion: number;
 }
 
 export interface ClienteUpdateTipoImpresion {
   ClienteId: number;
-  TipoImpresion: boolean;
+  TipoImpresion: number;
 }

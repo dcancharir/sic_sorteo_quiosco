@@ -131,7 +131,7 @@ export class SesionClienteComponent implements OnInit {
   }
 
   onTipoImpresionChange(event: any) {
-    const selectedValue = event.target.value === 'true';
+    const selectedValue = event.target.value;
 
     var that = this;
 
