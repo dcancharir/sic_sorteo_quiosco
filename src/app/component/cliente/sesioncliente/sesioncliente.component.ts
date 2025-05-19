@@ -28,6 +28,7 @@ import { ConfirmdialogService } from '../../../service/confirmdialog/confirmdial
   styleUrl: './sesioncliente.component.css',
 })
 export class SesionClienteComponent implements OnInit {
+  tipoImpresion:number = 0
   totalCuponesProgress: number = 0;
   cuponesProcesados: number = 0;
   messageProgressBar: string = '';
@@ -75,6 +76,7 @@ export class SesionClienteComponent implements OnInit {
       this.cliente = itemString ? JSON.parse(itemString) : null;
       if (this.cliente) {
         this.clienteId = this.cliente.ClienteId;
+        this.tipoImpresion = this.cliente.TipoImpresion ?? 1
       }
       this.cargarInfoSala();
       // this.cargarInfoQuiosco()
@@ -131,7 +133,7 @@ export class SesionClienteComponent implements OnInit {
   }
 
   onTipoImpresionChange(event: any) {
-    const selectedValue = event.target.value === 'true';
+    const selectedValue = event.target.value
 
     var that = this;
 
@@ -142,14 +144,15 @@ export class SesionClienteComponent implements OnInit {
       TipoImpresion: selectedValue, // Asegúrate de que sea el tipo correcto
       // Si puedes enviar más campos, agrega los campos requeridos
     };
-    // console.log(clienteData);
 
-    if (selectedValue !== undefined) {
+    if (selectedValue) {
       that.spinnerService.show();
       that.idleUserService.updateImpresion(clienteData).subscribe({
         next: (result) => {
-          console.log(result, 'resultado');
           if (result.status) {
+            this.cliente.TipoImpresion = selectedValue
+            localStorage.removeItem('cliente')
+            localStorage.setItem('cliente',JSON.stringify(this.cliente))
             that.toastr.success(result.msg);
           } else {
             that.toastr.error(result.msg);
@@ -162,17 +165,6 @@ export class SesionClienteComponent implements OnInit {
           that.spinnerService.hide();
         },
       });
-
-      // this.confirmdialogService.confirmThis(
-      //   'Esta Seguro de LIBERAR la máquina ? ,del cliente : ',
-      //   function () {
-      //     // yes
-
-      //   },
-      //   function () {
-      //     // no
-      //   }
-      // );
     }
   }
   cargarInfoSala() {

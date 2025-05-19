@@ -39,33 +39,27 @@
                     <div class="text-center mb-4 mt-4">
                         <img style="width: 240px;margin: auto;filter: contrast(150%);" class="img_response" src="{{logo}}" alt="">
                     </div>
-
                     <div class="card border-red shadow-lg blur mb-4">
                         <div class="card-body pt-3" style="color: #fff;padding-left: 32px;padding-right: 32px;">
                             <div class="text-center">
                                 <h2 class="text-center text-light">Nro. Doc. : {{cliente.TipoDocumento.Nombre}} - {{cliente.NroDoc}}</h2>
                                 <h2 class="text-center text-warning">{{cliente.NombreCompleto}} </h2>
-
                             </div>
-
-
-
                             <div class="row">
-                              <div class="form-group mt-4 d-flex align-items-center">
-                              <div class="col-12 col-md-5">
-                                <label for="impresionAutomatica" class="text-light mr-3">Tipo de Impresion</label>
+                                <div class="form-group mt-4 d-flex align-items-center">
+                                    <div class="col-12 col-md-5">
+                                        <label for="impresionAutomatica" class="text-light mr-3 mb-0">Tipo de Impresión</label>
 
-                              </div>
-                              <div class="col-12 col-md-7" (change)="onTipoImpresionChange($event)">
+                                    </div>
+                                    <div class="col-12 col-md-7" (change)="onTipoImpresionChange($event)">
 
-                                <select id="impresionAutomatica" class="form-control" [disabled]="!fechaValida">
-                                  <option value="1">Manual</option>
-                                  <option value="2">Automatica</option>
-                              </select>
-                              </div>
+                                        <select id="impresionAutomatica" class="form-control custom-select" [disabled]="!fechaValida" [(ngModel)]="tipoImpresion">
+                                            <option [value]="1">Manual</option>
+                                            <option [value]="2">Automatica</option>
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
-
                         </div>
                     </div>
                 </div>
