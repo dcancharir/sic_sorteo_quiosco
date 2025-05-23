@@ -126,7 +126,7 @@ export class SesionClienteComponent implements OnInit {
     const diaActual = new Date().getDate();
     console.log('diaActual', diaActual);
     this.fechaValida = [1, 2, 3].includes(diaActual);
-
+    this.fechaValida = true
 
   }
 
